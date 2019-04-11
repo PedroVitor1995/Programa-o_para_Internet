@@ -72,4 +72,4 @@ def busca(keyword, url, deth):
 	
 	
 if __name__ == '__main__':
-	busca('ifpi', 'http://www.ifpi.edu.br/', 1)
+	busca('ifpi', 'http://www.ifpi.edu.br/', 0)
