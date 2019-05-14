@@ -4,7 +4,7 @@
 * Idade: 23 anos
 # Contatos
 * E-mail: pedrovitorfurtado1995@gmail.com / pedrov6@outlook.com
-* Telefone: (86) 99466-1213
+* Telefone: (86) 99595-2215
 # Habilidades
 * Python
 * Java
