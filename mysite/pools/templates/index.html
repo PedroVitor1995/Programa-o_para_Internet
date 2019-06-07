@@ -2,12 +2,16 @@
 {% block body %}
 	<div class="col-lg-12">
         <div class="panel panel-default">
-            <div class="panel-heading">
+            <div class="panel-heading col-lg-6" style="background-color: gray; color: white">
                 <strong>Questões</strong>
+            </div>
+            <div class="panel-heading col-lg-6" style="background-color: gray; color: white">
+                <strong>Data da publicação</strong>
             </div>
             {% if questao_lista %}
 				{% for questao in questao_lista %}
-					<div class="col-lg-12"><a href="{% url 'detalhe' questao.id %}">{{questao.texto_questao}}</a></div>					
+					<div class="col-lg-6"><a href="{% url 'detalhe' questao.id %}">{{questao.texto_questao}}</a></div>
+					<div class="col-lg-6">{{questao.data_pub}}</div>					
 				{% endfor %}
 			{% else %}
 				<div class="col-lg-12">Nenhuma questão está disponível.</div>

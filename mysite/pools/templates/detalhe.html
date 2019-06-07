@@ -2,7 +2,7 @@
 {% block body %}
 	<div class="col-lg-12">
         <div class="panel panel-default">
-            <div class="panel-heading">
+            <div class="panel-heading" style="background-color: gray; color: white">
                 <strong>{{questao.texto_questao}}</strong>
             </div>
             {% if error_message %}
@@ -14,7 +14,7 @@
 					<div class="col-lg-12 panel-heading"><input type="radio" name="opcao" id="opcao{{forloop.counter}}" value="{{opcao.id}}">
 					<label for="opcao{{forloop.counter}}">{{opcao.texto_opcao}}</label><br></div>
 				{% endfor %}
-				<div class="col-lg-12"><input class="btn-success" type="submit" value="Vote"></div>
+				<div class="col-lg-12"><input class="btn btn-success" type="submit" value="Vote"></div>
 			</form>
         </div>
     </div>
