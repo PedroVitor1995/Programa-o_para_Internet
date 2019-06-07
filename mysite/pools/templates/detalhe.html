@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block body %}
+	<div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <strong>{{questao.texto_questao}}</strong>
+            </div>
+            {% if error_message %}
+				<div><strong>{{error_message}}</strong></div>
+			{% endif %}
+            <form action="{% url 'voto' questao.id %}" method="post">
+				{% csrf_token %}
+				{% for opcao in questao.opcao_set.all %}
+					<div class="col-lg-12 panel-heading"><input type="radio" name="opcao" id="opcao{{forloop.counter}}" value="{{opcao.id}}">
+					<label for="opcao{{forloop.counter}}">{{opcao.texto_opcao}}</label><br></div>
+				{% endfor %}
+				<div class="col-lg-12"><input class="btn-success" type="submit" value="Vote"></div>
+			</form>
+        </div>
+    </div>
+{% endblock %}

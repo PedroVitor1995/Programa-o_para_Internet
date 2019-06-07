@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block body %}
+	<div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <strong>{{questao.texto_questao}}</strong>
+            </div>
+            <div class="panel panel-default col-lg-4">Opcao</div>
+            <div class="panel panel-default col-lg-4" style="text-align: center;">Votos</div>
+            <div class="panel panel-default col-lg-4" style="text-align: center;">Percentual</div>
+        </div>
+        <div class="panel panel-default">
+            {% for opcao in questao.opcao_set.all %}
+                <div class="col-lg-4" >{{opcao.texto_opcao}}</div>
+                <div class="col-lg-4" style="text-align: center;">{{opcao.votos}}</div>
+                <div class="col-lg-4" style="text-align: center;">
+                    <script>
+                        document.write(({{opcao.votos}} * 100) / {{total_votos}} + " % ");
+                    </script>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-lg-12"><a href="{% url 'detalhe' questao.id %}">Votar novamente</a></div>
+{% endblock %}
