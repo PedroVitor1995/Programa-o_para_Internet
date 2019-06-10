@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block body %}
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="panel-heading text-danger" style="font-size: 30px;">Adicionar artigo</div>
+			<div class="panel-heading">
+				<form method="post">
+					{% csrf_token %}
+					{{form.as_p}}
+					<input class="btn-primary" type="submit" value="Criar">
+				</form>
+			</div>
+		</div>
+	</div>
+{% endblock %}

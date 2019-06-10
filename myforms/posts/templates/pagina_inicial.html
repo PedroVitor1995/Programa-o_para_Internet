@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block body %}
+	<div class="row">
+		<div class="panel-heading col-lg-12" style="font-size: 30px;">
+			<a href="{% url 'listar_posts' %}" style="color: green;">Postagem</a>
+		</div>
+		<div class="panel-heading col-lg-12" style="font-size: 30px;">
+			<a href="{% url 'listar_artigos' %}" style="color: green;">Artigo</a>
+		</div>
+		<div class="panel-heading col-lg-12" style="font-size: 30px;">
+			<a href="{% url 'listar_livros' %}" style="color: green;">Livro</a>
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block body %}
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="panel-heading text-success" style="font-size: 30px;">Livros</div>
+			<div class="panel-heading">
+				{% for livro in livros %}
+					<h2 class="panel-heading text-warning">{{livro.nome}}</h2>
+					<h4 class="panel-heading text-muted">Autor(es):</h4>
+					{% for autor in livro.autores.all %}
+						<p class="panel-heading text-muted">{{autor.nome|linebreaksbr}}</p>
+					{% endfor %}
+				{% endfor %}
+			</div>
+		</div>
+		<div class="col-lg-12">
+			<a href="{% url 'adicionar_livro' %}">Adiconar livro</a>
+		</div>
+	</div>
+{% endblock %}

@@ -19,6 +19,11 @@ from posts import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.listar_posts, name='listar_posts'),
+    path('',views.pagina_inicial, name='pagina_inicial'),
+    path('listar_posts/', views.listar_posts, name='listar_posts'),
     path('adicionar_post/', views.adicionar_post, name='adicionar_post'),
+    path('listar_artigos/', views.listar_artigos, name='listar_artigos'),
+    path('adicionar_artigo/', views.adicionar_artigo, name='adicionar_artigo'),
+    path('listar_livros/', views.listar_livros, name='listar_livros'),
+    path('adicionar_livro/', views.adicionar_livro, name='adicionar_livro'),
 ]
