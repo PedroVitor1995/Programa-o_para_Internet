@@ -20,7 +20,8 @@ from pools import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.index, name='index'),
-    path('<int:questao_id>/voto/',views.detalhe, name='detalhe'),
-    path('<int:questao_id>/votacao/',views.votacao, name='voto'),
-    path('<int:questao_id>/resultado/',views.resultado, name='resultado'),
+    path('question/<int:questao_id>/voto/',views.detalhe, name='detalhe'),
+    path('question/<int:questao_id>/votacao/',views.votacao, name='voto'),
+    path('question/<int:questao_id>/resultado/',views.resultado, name='resultado'),
+    path('question/<int:questao_id>/manage/',views.manage, name='manage'),
 ]

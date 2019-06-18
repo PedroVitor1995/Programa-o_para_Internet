@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block body %}
+	<div class="row">
+		<div class="col-lg-12">
+	        <div class="panel panel-default">
+	        	<div class="panel-heading col-lg-12" style="background-color: gray; color: white;">
+	                <strong>Questão</strong>
+	            </div>
+	            <div class="panel panel-default col-lg-6">
+	                <strong>{{questao.texto_questao}}</strong>
+	            </div>
+	            <div class="panel panel-default col-lg-6">
+	                <strong>Fechar questão</strong>
+	            </div>
+	    	</div>
+	    </div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-12">
+	        <div class="panel panel-default">
+	        	<div class="panel-heading col-lg-12" style="background-color: gray; color: white;">
+	                <strong>Opções</strong>
+	            </div>
+	            {% for opcao in questao.opcao_set.all %}
+					<div class="panel panel-default col-lg-6">{{opcao.texto_opcao}}</div>
+					<div class="panel panel-default col-lg-6">Remover</div>
+				{% endfor %}
+	    	</div>
+	    </div>
+	</div>
+{% endblock %}

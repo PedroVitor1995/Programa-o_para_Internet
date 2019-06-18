@@ -38,3 +38,8 @@ def resultado(request,questao_id):
 		total_votos += opcao.votos
 
 	return render(request,'resultado.html',{'questao':questao,'total_votos':total_votos})
+
+def manage(request, questao_id):
+	questao = Questao.objects.get(id=questao_id)
+	return render(request, 'manage.html', {'questao':questao})
+
