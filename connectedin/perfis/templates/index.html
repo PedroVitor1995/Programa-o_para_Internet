@@ -32,7 +32,10 @@
                         {% for convite in perfil_logado.convites_recebidos.all %}
                             <li class="list-group-item">
                                 {{ convite.solicitante.nome }}
-                                <a href="{% url 'aceitar' convite.id %}" class="pull-right">aceitar</a>
+                                <a href="{% url 'aceitar' convite.id %}" class="btn btn-success">
+                                <span class="glyphicon glyphicon-add">Aceitar</span></a>
+                                <a href="{% url 'recusar' convite.id %}" class="btn btn-danger">
+                                <span class="glyphicon glyphicon-add"></span>Recusar</a>
                             </li>
                         {% endfor %}
                     </ul>
@@ -51,7 +54,11 @@
                     </div>
                     <ul class="list-group">
                         {% for contato in perfil_logado.contatos.all %}
-                            <a href="{% url 'exibir' contato.id %}" class="list-group-item">{{contato.nome}} // {{contato.email}}</a>
+                            <li class="list-group-item">
+                                <a href="{% url 'exibir' contato.id %}">{{contato.nome}} // {{contato.email}}</a>
+                                <a href="{% url 'desfazer' contato.id %}" class="btn btn-danger">
+                                <span class="glyphicon glyphicon-add"></span>Desfazer</a>
+                            </li>
                         {% endfor %}
                     </ul>
                 {% else %}

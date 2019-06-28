@@ -6,21 +6,28 @@
         <meta name="viewport" content="width=device-width">
         <link href="{% static 'styles/bootstrap.css' %}" rel="stylesheet">
         <link href="{% static 'styles/main.css' %}" rel="stylesheet">
+        <link href="{% static 'styles/signin.css' %}" rel="stylesheet">
+        <link href="{% static 'styles/site.css' %}" rel="stylesheet">
         <title>ConnectedIn</title>
     </head>
     <body>
-        <div class="container">
+
+        <header class="container">
             <div class="header">
                 <ul class="nav nav-pills pull-right">
-                    <li class=""><a href="{% url 'index' %}">Nome</a></li>
-                    <li class=""><a href="/logout/">Logout</a></li>
+                    <li><a href="{% url 'index' %}">{{perfil_logado.nome}}</a></li>
+                    <li><a href="/logout/">Logout</a></li>
+                    <li><a href="{% url 'alterar_senha' %}">Alterar senha</a></li>
                 </ul>
                 <h3 class="text-muted">ConnectedIn</h3>
             </div>
+        </header> 
+
+        <section class="container">
             <div class="row content">
                 {% block body %}
                 {% endblock %}
             </div>
-        </div>
+        </section>   
     </body>
 </html>
