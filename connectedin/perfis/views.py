@@ -1,4 +1,4 @@
-from perfis.models import Perfil, Convite
+from perfis.models import *
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -54,8 +54,8 @@ def desfazer(request,perfil_id):
 	perfil_logado.desfazer(perfil_a_desfazer)
 	return redirect('index')
 	 	
+#Alterar senha
 @login_required
-#Alterar senha:
 def alterar_senha(request):
 	if request.method == 'POST':
 		form = PasswordChangeForm(request.user, request.POST)

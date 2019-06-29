@@ -2,9 +2,9 @@
 {% block body %}
 	<form class="form-signin" method="post">
 		{% csrf_token %}
-		<input class="form-control" type="password" name="old_password" placeholder="Antiga senha" id="id_old_password" autofocus required>
-		<input class="form-control" type="password" name="new_password1" placeholder="Nova senha" id="id_new_password1" required>
-		<input class="form-control" type="password" name="new_password2" placeholder="Confirmar nova senha" id="id_new_password2" required>
+		<input class="form-control" type="password" name="old_password" placeholder="Antiga senha" id="id_old_password" required autofocus pattern>
+		<input class="form-control" type="password" name="new_password1" placeholder="Nova senha" id="id_new_password1" required minlength="6">
+		<input class="form-control" type="password" name="new_password2" placeholder="Confirmar nova senha" id="id_new_password2" required minlength="6">
 		<button class="btn btn-lg btn-primary btn-block" type="submit">Alterar</button>
 
 		{% if messages %}

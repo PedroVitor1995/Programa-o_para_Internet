@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views
+from usuarios import views
 from usuarios.views import RegistrarUsuarioView
 from django.contrib.auth import views as v
 
