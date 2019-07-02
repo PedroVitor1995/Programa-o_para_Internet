@@ -63,9 +63,13 @@ def alterar_senha(request):
 			user = form.save()
 			update_session_auth_hash(request, user)
 			messages.success(request, 'Sua senha foi atualizada com sucesso!')
-			return redirect('senha')
+			return redirect('alterar_senha')
 		else:
-			messages.error(request, 'Não foi possível atualizar senha')
+			senha_exists = User.objects.filter(password=request.POST['old_password']).exists()
+			if request.POST['new_password2'] != request.POST['new_password1']:
+				messages.error(request, 'A confirmação da senha não confere com a nova senha.')
+			
+
 	else:
 		form = PasswordChangeForm(request.user)
 	

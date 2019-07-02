@@ -122,11 +122,15 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
-## Configurações adicionadas
+# Configuração de login e logout
 
-
-# configuração de login e logout
 LOGIN_URL = '/login/'
 LOGOUT_URL = '/logout/'
 LOGIN_REDIRECT_URL = '/'
+
+
+# Configuração de redefinição de senha
+
+
+# Configuração de idiomas
 
