@@ -4,14 +4,17 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
         <link href="{% static 'styles/bootstrap.css' %}" rel="stylesheet">
         <link href="{% static 'styles/main.css' %}" rel="stylesheet">
         <link href="{% static 'styles/signin.css' %}" rel="stylesheet">
         <link href="{% static 'styles/site.css' %}" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
         <title>ConnectedIn</title>
     </head>
     <body>
-
         <header class="container">
             <div class="header">
                 <ul class="nav nav-pills pull-right">
@@ -22,10 +25,10 @@
                 <h3 class="text-muted">ConnectedIn</h3>
             </div>
         </header> 
-
         <section class="container">
             <div class="row content">
                 {% block body %}
+                
                 {% endblock %}
             </div>
         </section>   

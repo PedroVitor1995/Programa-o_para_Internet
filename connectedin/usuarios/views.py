@@ -22,7 +22,7 @@ class RegistrarUsuarioView(View):
 			email_exists = User.objects.filter(email=request.POST['email']).exists()
 
 			if email_exists:
-				messages.success(request,'Email já existente.')
+				messages.error(request,'Email já existente.')
 				return render(request,self.template_name,{'form':form})
 
 			usuario = User.objects.create_user(username = dados_form['nome'],
@@ -41,6 +41,10 @@ class RegistrarUsuarioView(View):
 		else:
 			if request.POST['senha_confirmar'] != request.POST['senha']:
 				messages.error(request, 'A confirmação da senha não confere com a nova senha.')
+
+			user_exists = User.objects.filter(username=request.POST['nome']).exists()
+			if user_exists:
+				messages.error(request,'Usuário já existente.')
 
 
 		return render(request,self.template_name,{'form':form})
