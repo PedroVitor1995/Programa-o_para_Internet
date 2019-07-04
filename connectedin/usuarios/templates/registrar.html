@@ -1,33 +1,55 @@
 {% extends "base_usuario.html" %}
 {% block body %}
+	<div class="form-signin text-info" style="text-align: center;">
+		<h2><strong>Cadastro</strong></h2>
+	</div>
+	<div class="form-signin panel">
+		<form action="{% url 'registrar' %}" method="post">
+			{% csrf_token %}
+			<div class="panel-body">
+				<input class="form-control" type="text"  id="id_nome" name="nome" placeholder="Nome" required autofocus>
+			</div>
+			<div class="panel-body">
+				<input class="form-control" type="email" id="id_email" name="email" placeholder="Email" required>
+			</div>
+			<div class="panel-body">
+				<input class="form-control" type="tel" id="id_telefone" name="telefone" placeholder="Telefone" required>
+			</div>
+			<div class="panel-body">
+				<input class="form-control" type="text" id="id_nome_empresa" name="nome_empresa" placeholder="Empresa" required>
+			</div>
+			<div class="panel-body">
+				<input class="form-control" type="password" id="id_senha" name="senha" placeholder="Senha" required>
+			</div>
+			<div class="panel-body">
+				<input class="form-control" type="password" id="id_senha" name="senha_confirmar" placeholder="Confimar senha" required>
+			</div>
+			<div class="panel-body">
+				<button class="btn btn-lg btn-primary btn-block" type="submit" value="Login">Registrar</button>
+			</div>
 
-	<form class="form-signin" action="{% url 'registrar' %}" method="post">
-		{% csrf_token %}
-		<h2 class="form-signin-heading">Crie seu usuário</h2>
-		<input class="form-control" type="text"  id="id_nome" name="nome" placeholder="Nome" required autofocus>
-		<input class="form-control" type="email" id="id_email" name="email" placeholder="Email" required>
-		<input class="form-control" type="tel" id="id_telefone" name="telefone" placeholder="Telefone" required>
-		<input class="form-control" type="text" id="id_nome_empresa" name="nome_empresa" placeholder="Empresa" required>
-		<input class="form-control" type="password" id="id_senha" name="senha" placeholder="Senha" required>
-		<input class="form-control" type="password" id="id_senha" name="senha_confirmar" placeholder="Confimar senha" required>
-		<hr>
-		<button class="btn btn-lg btn-primary btn-block" type="submit" value="Login">Registrar</button>
+			{% if form.errors %}
+				<div class="alert alert-danger alert-dismissible">
+					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+					{{form.non_field_errors}}
+				</div>
+			{% endif %}
 
-		{% if messages %}
-			{% for message in messages %}
-				{% if message.tags == success %}
-					<div class="alert alert-success alert-dismissible">
-						<button type="button" class="close" data-dismiss="alert">&times;</button>
-						{{message}}
-					</div>
-				{% else %}
-					<div class="alert alert-danger alert-dismissible">
-						<button type="button" class="close" data-dismiss="alert">&times;</button>
-						{{message}}
-					</div>
-				{% endif %}
-			{% endfor %}
-		{% endif %}
-
-	</form> 
+			{% if messages %}
+				{% for message in messages %}
+					{% if message.tags == success %}
+						<div class="alert alert-success alert-dismissible">
+							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+							{{message}}
+						</div>
+					{% else %}
+						<div class="alert alert-danger alert-dismissible">
+							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+							{{message}}
+						</div>
+					{% endif %}
+				{% endfor %}
+			{% endif %}
+		</form> 
+	</div>
 {% endblock %}

@@ -1,21 +1,30 @@
 {% extends "base_usuario.html" %}
 {% block body %}
-	<form class="form-signin" role="form" action="{% url 'login' %}" method="post">
-		{% csrf_token %}
-		<h2 class="form-signin-heading">Login</h2>
-		<input class="form-control" type="text"  id="id_username" name="username" placeholder="Nome" required autofocus>
-		<input class="form-control" type="password" id="id_password" name="password" placeholder="Senha " required>
-		<hr>
-		<button class="btn btn-lg btn-primary btn-block" type="submit" value="Login">Login</button>
-
-		{% if form.errors %}
-			<div class="alert alert-danger">
-				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
-					x
-				</button>
-				Por favor, verifique o Nome e/ou Senha informados
+	<div class="form-signin text-info" style="text-align: center;">
+		<h2><strong>Login</strong></h2>
+	</div>
+	<div class="form-signin panel">
+		<form role="form" action="{% url 'login' %}" method="post">
+			{% csrf_token %}
+			<div class="panel-body">
+				<input class="form-control" type="text"  id="id_username" name="username" placeholder="Nome" required autofocus>
 			</div>
-		{% endif %}
-		<a href="{% url 'registrar' %}">Registre-se</a>
-	</form>  
+			<div class="panel-body">
+				<input class="form-control" type="password" id="id_password" name="password" placeholder="Senha " required>
+			</div>
+			<div class="panel-body">
+				<button class="btn btn-lg btn-primary btn-block" type="submit" value="Login">Login</button>
+			</div>
+			
+			{% if form.errors %}
+				<div class="alert alert-danger alert-dismissible">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					Por favor, verifique o Nome e/ou Senha informados
+				</div>
+			{% endif %}
+			<div class="panel-body">
+				<a href="{% url 'registrar' %}">Registre-se</a>
+			</div>
+		</form>
+	</div>
 {% endblock %}

@@ -15,22 +15,82 @@
         <title>ConnectedIn</title>
     </head>
     <body>
-        <header class="container">
+        <header>
             <div class="header">
                 <ul class="nav nav-pills pull-right">
                     <li><a href="{% url 'index' %}">{{perfil_logado.nome}}</a></li>
                     <li><a href="/logout/">Logout</a></li>
                     <li><a href="{% url 'alterar_senha' %}">Alterar senha</a></li>
                 </ul>
-                <h3 class="text-muted">ConnectedIn</h3>
+                <h3 class="text-muted"><strong>ConnectedIn</strong></h3>
             </div>
         </header> 
-        <section class="container">
-            <div class="row content">
-                {% block body %}
+        <div class="row">
+          <div class="col-sm-3">
+            <nav>
+                <h4><strong>Contatos</strong></h4>
+                <div class="panel panel-default">
+                    {% with total_de_contatos=perfil_logado.contatos.count %}
+                        {% if total_de_contatos %}
+                            <div class="panel-heading">
+                                <strong>Você tem {{total_de_contatos}} contato{{total_de_contatos|pluralize}}</strong>
+                            </div>
+                            <ul class="list-group">
+                                {% for contato in perfil_logado.contatos.all %}
+                                    <li class="list-group-item">
+                                        <a href="{% url 'exibir' contato.id %}">{{contato.nome}}</a>
+                                        <a href="{% url 'desfazer' contato.id %}" class="btn btn-danger">
+                                        <span class="glyphicon glyphicon-add"></span>Desfazer</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <div class="panel-body">
+                                <p>Você não possui contatos no momento :(</p>
+                            </div>
+                        {% endif %}
+                    {% endwith%}
+                </div> 
+            </nav>
+          </div>
+          <div class="col-sm-6">
+            <section>
                 
-                {% endblock %}
-            </div>
-        </section>   
+            </section> 
+          </div>
+          <div class="col-sm-3">
+            <aside>
+                <h4><strong>Convites</strong></h4>
+                <div class="panel panel-default">
+                    {% with total_de_convites=perfil_logado.convites_recebidos.count %}
+                        {% if total_de_convites %}
+                            <div class="panel-heading">
+                                <strong>
+                                    Você tem
+                                    {{ total_de_convites }} convite{{ total_de_convites|pluralize }}
+                                    aguardando aprovação
+                                </strong>
+                            </div>
+                            <ul class="list-group">
+                                {% for convite in perfil_logado.convites_recebidos.all %}
+                                    <li class="list-group-item">
+                                        {{ convite.solicitante.nome }}
+                                        <a href="{% url 'aceitar' convite.id %}" class="btn btn-success">
+                                        <span class="glyphicon glyphicon-add">Aceitar</span></a>
+                                        <a href="{% url 'recusar' convite.id %}" class="btn btn-danger">
+                                        <span class="glyphicon glyphicon-add"></span>Recusar</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <div class="panel-body">
+                                <p>Nenhum convite recebido :(</p>
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                </div>
+            </aside>
+          </div>
+        </div>  
     </body>
 </html>
