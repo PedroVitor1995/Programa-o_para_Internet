@@ -1,6 +1,5 @@
 from django import forms
 from django.contrib.auth.models import User
-from perfis.models import *
 
 class RegistrarUsuarioForm(forms.Form):
 	nome = forms.CharField(required=True)

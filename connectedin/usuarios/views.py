@@ -33,7 +33,6 @@ class RegistrarUsuarioView(View):
 							usuario = usuario)
 
 			perfil.save()
-
 			messages.success(request,'Cadastro realizado com sucesso')
 
 			return redirect('registrar')

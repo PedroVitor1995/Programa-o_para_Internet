@@ -66,6 +66,9 @@ def alterar_senha(request):
 			return redirect('alterar_senha')
 		else:
 			senha_exists = User.objects.filter(password=request.POST['old_password']).exists()
+			if senha_exists:
+				messages.error(request,'A senha atual não confere')
+
 			if request.POST['new_password2'] != request.POST['new_password1']:
 				messages.error(request, 'A confirmação da senha não confere com a nova senha.')
 			
