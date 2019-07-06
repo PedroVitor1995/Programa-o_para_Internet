@@ -16,14 +16,13 @@ class RegistrarUsuarioView(View):
 	def post(self,request):
 		form = RegistrarUsuarioForm(request.POST)
 
+
 		if form.is_valid():
 			dados_form = form.cleaned_data
 
 			email_exists = User.objects.filter(email=request.POST['email']).exists()
 			if email_exists:
-				messages.error(request,'Email já existente')
-				return render(request,self.template_name,{'form':form})
-
+				return render(request,self.template_name,{'error_message':"Email já existente"})
 
 			usuario = User.objects.create_user(username = dados_form['nome'],
 												email = dados_form['email'],
@@ -39,7 +38,7 @@ class RegistrarUsuarioView(View):
 
 		else:
 			if request.POST['senha_confirmar'] != request.POST['senha']:
-				messages.error(request,'Senha não conferem')
+				return render(request,self.template_name,{'error_message':"Senha não confere"})
 
 
 		return render(request,self.template_name,{'form':form})
