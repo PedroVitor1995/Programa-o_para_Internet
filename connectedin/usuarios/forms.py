@@ -6,7 +6,6 @@ class RegistrarUsuarioForm(forms.Form):
 	email = forms.EmailField(required=True)
 	senha = forms.CharField(required=True)
 	telefone = forms.CharField(required=True)
-	nome_empresa = forms.CharField(required=True)
 
 	def is_valid(self):
 		valid = True

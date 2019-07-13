@@ -1,8 +1,87 @@
-body {
-	padding-top: 5px;
-	background-color: #eee;
+body{
+    padding-top: 0px !important;
+    margin-top: -15px !important;
 }
-.header {
-	padding-left: 50px;
-	padding-right: 100px;
+.content-left{
+	padding-left: 30px;
 }
+
+.main-sidebar{
+    background-color: #A4A4A4 !important;
+}
+.content-right {
+    position: relative;
+    float: right;
+    top: 0;
+    left: 0;
+    padding-top: 2px;
+    min-height: 100%;
+    width: 300px;
+}
+.title{
+	font-size: 28px !important;
+	color: white !important;
+}
+.image-perfil {
+    float: left;
+    max-height: 45px;
+    max-width: 45px;
+    border-radius: 50%;
+    margin-right: 10px;
+    margin-top: -13px;
+
+}
+.nav > li > a:hover, .nav > li > a:active, .nav > li > a:focus {
+    color: white !important;
+    background: #848484 !important;
+}
+.menu-right{
+	color: white;
+}
+
+.align-text{
+	text-align: center;
+}
+.size-text{
+    font-size: 22px;
+}
+.size-text-menu{
+    font-size: 14px;
+}
+.w3-dropdown-hover:first-child, .w3-dropdown-click:hover {
+    background-color: #009688 !important;
+    color: white !important;
+}
+.w3-input {
+    padding: 8px;
+    display: block;
+    border: none;
+    border-bottom-color: currentcolor;
+    border-bottom-style: none;
+    border-bottom-width: medium;
+    border-bottom: 1px solid #ccc;
+    width: 30% !important;
+}
+.bar-color{
+    background-color: #009688 !important;
+    color: white !important;
+}
+.a-principal:hover,
+.a-principal:focus {
+    color: #000;
+    text-decoration: underline;
+    background-color: #ccc !important;
+}
+.busca{
+    margin-top: 1px;
+    background-color: #009688;
+}
+.input-search{
+    margin-left: 5px;
+    background-color:#ccc;
+    border:solid 2px #5F9EA0;
+    border-radius:10px;
+    width:300px;
+    height:32px;
+}
+

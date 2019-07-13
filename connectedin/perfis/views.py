@@ -43,7 +43,6 @@ def aceitar(request, convite_id):
 def recusar(request, convite_id):
 	convite = Convite.objects.get(id=convite_id)
 	convite.recusar()
-
 	return redirect('index')
 
 #Desfazer amizade
@@ -69,8 +68,11 @@ def alterar_senha(request):
 			if senha_exists:
 				messages.error(request,'A senha atual não confere')
 
-			if request.POST['new_password2'] != request.POST['new_password1']:
-				messages.error(request, 'A confirmação da senha não confere com a nova senha.')
+			elif request.POST['new_password2'] != request.POST['new_password1']:
+				messages.error(request, 'A confirmação da senha não confere com a nova senha')
+			else:
+				messages.error(request, 'Verifique seus dados')
+
 			
 
 	else:

@@ -1,98 +1,122 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="pt">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-        <link href="{% static 'styles/bootstrap.css' %}" rel="stylesheet">
-        <link href="{% static 'styles/main.css' %}" rel="stylesheet">
-        <link href="{% static 'styles/signin.css' %}" rel="stylesheet">
-        <link href="{% static 'styles/social.css' %}" rel="stylesheet">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-        <title>ConnectedIn</title>
-    </head>
-    <body>
-        <header>
-            <div class="header">
-                <ul class="nav nav-pills pull-right">
-                    <li><a href="{% url 'index' %}">{{perfil_logado.nome}}</a></li>
-                    <li><a href="/logout/">Logout</a></li>
-                    <li><a href="{% url 'alterar_senha' %}">Alterar senha</a></li>
-                </ul>
-                <h3 class="text-muted"><strong>ConnectedIn</strong></h3>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{% static 'styles/w3/w3.css' %}" rel="stylesheet">
+    <link href="{% static 'styles/bootstrap/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'styles/site.css' %}" rel="stylesheet">
+    <link href="{% static 'styles/signin.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <title>ConnectedIn</title>
+  </head>
+  <body style="width: 100%; height: 100%;">
+
+    <header class="w3-container w3-teal w3-panel w3-padding-16 ">
+       <div class="w3-bar">
+        <div class="w3-col w3-cell w3-mobile align-text" style="width:20%">
+          <h4 class="title"><b>ConnectedIn</b></h4>
+        </div>
+        <div class="w3-half w3-container w3-col w3-cell w3-mobile align-text" style="width:50%">
+          <div class="w3-half w3-container" style="padding-top: 13px;">
+            <div class="size-text">
+              <a href="{% url 'index' %}" class="menu-right a-principal">
+                <i class="fa fa-home"></i>
+                <span>Página Inicial</span>
+              </a>
             </div>
-        </header> 
-        <div class="row">
-          <div class="col-sm-3">
-            <nav>
-                <h4><strong>Contatos</strong></h4>
-                <div class="panel panel-default">
-                    {% with total_de_contatos=perfil_logado.contatos.count %}
-                        {% if total_de_contatos %}
-                            <div class="panel-heading">
-                                <strong>Você tem {{total_de_contatos}} contato{{total_de_contatos|pluralize}}</strong>
-                            </div>
-                            <ul class="list-group">
-                                {% for contato in perfil_logado.contatos.all %}
-                                    <li class="list-group-item">
-                                        <a href="{% url 'exibir' contato.id %}">{{contato.nome}}</a>
-                                        <a href="{% url 'desfazer' contato.id %}" class="btn btn-danger">
-                                        <span class="glyphicon glyphicon-add"></span>Desfazer</a>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        {% else %}
-                            <div class="panel-body">
-                                <p>Você não possui contatos no momento :(</p>
-                            </div>
-                        {% endif %}
-                    {% endwith%}
-                </div> 
-            </nav>
           </div>
-          <div class="col-sm-6">
-            <section>
-                {% block body%}
-            
-                {% endblock %}
-            </section> 
-          </div>
-          <div class="col-sm-3">
-            <aside>
-                <h4><strong>Convites</strong></h4>
-                <div class="panel panel-default">
-                    {% with total_de_convites=perfil_logado.convites_recebidos.count %}
-                        {% if total_de_convites %}
-                            <div class="panel-heading">
-                                <strong>
-                                    Você tem
-                                    {{ total_de_convites }} convite{{ total_de_convites|pluralize }}
-                                    aguardando aprovação
-                                </strong>
-                            </div>
-                            <ul class="list-group">
-                                {% for convite in perfil_logado.convites_recebidos.all %}
-                                    <li class="list-group-item">
-                                        {{ convite.solicitante.nome }}
-                                        <a href="{% url 'aceitar' convite.id %}" class="btn btn-success">
-                                        <span class="glyphicon glyphicon-add">Aceitar</span></a>
-                                        <a href="{% url 'recusar' convite.id %}" class="btn btn-danger">
-                                        <span class="glyphicon glyphicon-add"></span>Recusar</a>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        {% else %}
-                            <div class="panel-body">
-                                <p>Nenhum convite recebido :(</p>
-                            </div>
-                        {% endif %}
-                    {% endwith %}
+        </div>
+        <div class="w3-col w3-cell w3-mobile" style="width:30%">
+          <div class="w3-half w3-bar-item" style="padding-top: 13px;"> 
+            <div class="w3-dropdown-hover">
+              <button class="w3-button"><i class="fa fa-search"></i></button>
+              <div class="w3-dropdown-content w3-bar-block w3-card-4">
+                <div class="busca">
+                  <input class="input-search" type="search" placeholder="Buscar amigos..."/>
+                  <a href="{% url 'index' %}">
+                    <button class="w3-button">
+                      <i class="fa fa-search" style="color: white;"></i>
+                    </button>
+                  </a>
                 </div>
-            </aside>
+              </div>
+            </div>
           </div>
-        </div>  
-    </body>
+          <div class="w3-half w3-bar-item" style="padding-top: 13px;">
+            <div class="w3-dropdown-hover">
+              <button class="w3-button">Opções</button>
+              <div class="w3-dropdown-content w3-bar-block w3-card-4 bar-color">
+                <a href="{% url 'alterar_senha' %}" class="w3-bar-item w3-button">
+                  Alterar Senha
+                </a>
+                <a href="#" class="w3-bar-item w3-button">Alterar Foto</a>
+              </div>
+            </div>
+          </div>
+          <div class="w3-bar-item" style="padding-top: 13px;">
+            <div class="w3-dropdown-hover">
+              <button class="w3-button">
+                <a href="/logout/" class="menu-right">
+                  Logout
+                </a>
+              </button>
+            </div>
+          </div>
+          <div class="w3-bar-item" style="padding-top: 13px;">
+            <div class="w3-dropdown-hover">
+              <h5><span><b>{{perfil_logado.nome}}</b></span><img src="{% static 'img/photo.jpg' %}" class="image-perfil w3-cicle" alt="My image"></h5>
+            </div>
+          </div>
+        </div>
+      </div> 
+    </header>
+    <div class="w3-row">
+      <nav class="w3-col  w3-cell w3-mobile align-text" style="width:20%; height: 100%;">
+        <h4 class="w3-panel w3-padding-16 w3-blue " style="margin-top: -5px; margin-left: 5%; margin-right: 5%;"><strong>Contatos</strong></h4>
+        {% with total_de_contatos=perfil_logado.contatos.count %}
+          {% if total_de_contatos %}
+            <ul class="list-group">
+                {% for contato in perfil_logado.contatos.all %}
+                    <li class="panel-body">
+                        <a href="{% url 'exibir' contato.id %}">{{contato.nome}}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+          {% else %}
+              <div class="panel-body">
+                  <p>Você não possui contatos no momento :(</p>
+              </div>
+          {% endif %}
+        {% endwith%}
+      </nav>
+
+      <section class="w3-col  w3-cell w3-mobile" style="width:55%; height: 100%;">
+        {% block body%}
+            
+        {% endblock %}
+      </section>
+
+      <aside class="w3-col w3-cell w3-mobile align-text" style="width:25%; height: 100%;">
+        <div class="w3-row" style="height: 50%; margin-right: 5%; margin-left: 5%">
+          <h4 class="w3-panel w3-padding-16 w3-green" style="margin-top:-5px;">
+            <span><strong>Convites Recebidos</strong></span>
+            <i class="fa fa-arrow-left"></i>
+          </h4>
+
+        </div>
+        <div class="w3-row" style="height: 50%; margin-right: 5%; margin-left: 5%">
+          <h4 class="w3-panel w3-padding-16 w3-green" style="margin-top:-5px;">
+            <span><strong>Convites Enviados</strong></span>
+            <i class="fa fa-arrow-right"></i>
+        </div>
+      </aside>
+
+    </div>
+
+  </body>
 </html>

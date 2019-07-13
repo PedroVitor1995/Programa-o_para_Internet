@@ -28,7 +28,6 @@ class RegistrarUsuarioView(View):
 												email = dados_form['email'],
 												password = dados_form['senha'])
 			perfil = Perfil(telefone = dados_form['telefone'],
-							nome_empresa = dados_form['nome_empresa'],
 							usuario = usuario)
 
 			perfil.save()
