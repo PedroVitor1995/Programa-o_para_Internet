@@ -33,7 +33,7 @@ class RegistrarUsuarioView(View):
 			perfil.save()
 			messages.success(request,'Cadastro realizado com sucesso')
 
-			return redirect('registrar')
+			return redirect('login')
 
 		else:
 			if request.POST['senha_confirmar'] != request.POST['senha']:

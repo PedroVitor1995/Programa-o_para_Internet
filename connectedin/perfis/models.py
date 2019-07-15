@@ -52,3 +52,34 @@ class Convite(models.Model):
 		
 	def recusar(self):
 		self.delete()
+
+class Bloqueio(models.Model):
+	bloqueador = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name='bloqueador')
+	bloqueado = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name='bloqueado')
+
+	def __str__():
+		return self.bloqueado.nome
+
+	def desbloquear(self):
+		self.delete()
+
+class Postagem(models.Model):
+	texto_postagem = models.CharField(max_length=300)
+	data_postagem = models.DateTimeField(auto_now_add=True)
+	perfil = models.ForeignKey(Perfil, related_name='usuario_postagem', on_delete=models.CASCADE)
+
+	class Meta:
+		ordering = ['-data_postagem']
+
+	def __str__(self):
+		return self.texto_postagem
+
+	def excluir(self):
+		self.delete()
+
+class Curtida(models.Model):
+	perfil = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name='curti')
+	post = models.ForeignKey(Postagem, on_delete=models.CASCADE, related_name='curtidas')
+
+	def descurtir():
+		self.delete()

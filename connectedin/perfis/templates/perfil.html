@@ -10,8 +10,11 @@
 			</address>
 			{% if ja_eh_contato %}
 				<div class="well well-sm">Vocês estão conectados!</div>
+			{% elif perfil.id == perfil_logado.id %}
+				<a href="" class="btn btn-primary" role="button">Desativar Perfil</a>
 			{% else %}
-				<a href="{% url 'convidar' perfil.id %}" class="btn btn-success" role="button">convidar</a>
+				<a href="{% url 'convidar' perfil.id %}" class="btn btn-success" role="button">Convidar</a>
+				<a href="" class="btn btn-warning" role="button">Bloquear</a>
 			{% endif %}
 		</div>
 	</div>
