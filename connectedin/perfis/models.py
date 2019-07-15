@@ -8,6 +8,8 @@ class Perfil(models.Model):
 	nome_empresa = models.CharField(max_length=60, null=False)
 	contatos = models.ManyToManyField('self')
 	usuario = models.OneToOneField(User,related_name="perfil",on_delete=models.CASCADE)
+	bloqueado = models.BooleanField(default=False)
+	ativo = models.BooleanField(default=True)
 
 	@property
 	def nome(self):
@@ -17,12 +19,27 @@ class Perfil(models.Model):
 	def email(self):
 		return self.usuario.email
 
-	def convidar(self, perfil_convidado):
-		Convite(solicitante=self, convidado=perfil_convidado).save()
-
 	def desfazer(self, perfil_id):
 		self.contatos.remove(perfil_id)
 		self.save()
+
+	def convidar_a_si_mesmo(self, perfil):
+		return self == perfil
+
+	def e_contato(self, perfil):
+		return self.contatos.filter(id=perfil.id).exists()
+
+	def possui_convite(self, perfil):
+		return (Convite.objects.filter(solicitante=self, convidado=perfil).exists() or
+				Convite.objects.filter(solicitante=perfil, convidado=self).exists())
+
+	def pode_convidar(self, perfil):
+		nao_pode = self.convidar_a_si_mesmo(perfil) or self.e_contato(perfil) or self.possui_convite(perfil)
+		return not nao_pode
+
+	def convidar(self, perfil_convidado):
+		if self.pode_convidar(perfil_convidado):
+			Convite(solicitante=self, convidado=perfil_convidado).save()
 
 class Convite(models.Model):
 	solicitante = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name='convites_feitos')

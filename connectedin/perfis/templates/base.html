@@ -5,118 +5,159 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="{% static 'styles/w3/w3.css' %}" rel="stylesheet">
+    <link href="{% static 'styles/w3/w3-theme-blue-grey.css' %}" rel="stylesheet">
     <link href="{% static 'styles/bootstrap/bootstrap.css' %}" rel="stylesheet">
     <link href="{% static 'styles/site.css' %}" rel="stylesheet">
     <link href="{% static 'styles/signin.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="{% static 'scripts/vendor/site.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <title>ConnectedIn</title>
   </head>
-  <body style="width: 100%; height: 100%;">
-
-    <header class="w3-container w3-teal w3-panel w3-padding-16 ">
-       <div class="w3-bar">
-        <div class="w3-col w3-cell w3-mobile align-text" style="width:20%">
-          <h4 class="title"><b>ConnectedIn</b></h4>
+  <body class="w3-theme-l5">
+    <header class="w3-top">
+      <div class="w3-bar nav-color w3-left-align w3-large">
+        <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large nav-color item-menu opcoes-cell
+        " href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
+        <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large nav-color item-menu opcoes-cell" href="javascript:void(0);" onclick="openNav1()"><i class="fa fa-search"></i></a>
+        <a href="{% url 'index' %}" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>ConnectedIn</a>
+        <div class="w3-dropdown-hover w3-hide-small w3-right" title="User">
+          <button class="w3-button w3-padding-large logo-user">
+            <span style="margin-left: 5px;"><b style="color: white;">{{perfil_logado.nome}}</b></span>
+            <img src="{% static 'img/photo.jpg' %}" class="image-perfil" alt="Avatar">
+          </button> 
         </div>
-        <div class="w3-half w3-container w3-col w3-cell w3-mobile align-text" style="width:50%">
-          <div class="w3-half w3-container" style="padding-top: 13px;">
-            <div class="size-text">
-              <a href="{% url 'index' %}" class="menu-right a-principal">
-                <i class="fa fa-home"></i>
-                <span>Página Inicial</span>
-              </a>
-            </div>
+        <div class="w3-dropdown-hover w3-hide-small w3-right">
+          <a href="/logout/" class="item-menu">
+            <button class="w3-button w3-padding-large">
+              <b>Sair</b>
+            </button> 
+          </a>    
+        </div>
+        <div class="w3-dropdown-hover w3-hide-small w3-right">
+          <button class="w3-button w3-padding-large" title="Options"><b class="item-menu">Opções</b></button>     
+          <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">
+            <a href="#" class="w3-bar-item w3-button">Alterar Foto</a>
+            <a href="#" class="w3-bar-item w3-button">Alterar Senha</a>
+            <a href="#" class="w3-bar-item w3-button">Desativar Conta</a>
           </div>
         </div>
-        <div class="w3-col w3-cell w3-mobile" style="width:30%">
-          <div class="w3-half w3-bar-item" style="padding-top: 13px;"> 
-            <div class="w3-dropdown-hover">
-              <button class="w3-button"><i class="fa fa-search"></i></button>
-              <div class="w3-dropdown-content w3-bar-block w3-card-4">
-                <div class="busca">
-                  <input class="input-search" type="search" placeholder="Buscar amigos..."/>
-                  <a href="{% url 'index' %}">
-                    <button class="w3-button">
-                      <i class="fa fa-search" style="color: white;"></i>
-                    </button>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="w3-half w3-bar-item" style="padding-top: 13px;">
-            <div class="w3-dropdown-hover">
-              <button class="w3-button">Opções</button>
-              <div class="w3-dropdown-content w3-bar-block w3-card-4 bar-color">
-                <a href="{% url 'alterar_senha' %}" class="w3-bar-item w3-button">
-                  Alterar Senha
-                </a>
-                <a href="#" class="w3-bar-item w3-button">Alterar Foto</a>
-              </div>
-            </div>
-          </div>
-          <div class="w3-bar-item" style="padding-top: 13px;">
-            <div class="w3-dropdown-hover">
-              <button class="w3-button">
-                <a href="/logout/" class="menu-right">
-                  Logout
-                </a>
-              </button>
-            </div>
-          </div>
-          <div class="w3-bar-item" style="padding-top: 13px;">
-            <div class="w3-dropdown-hover">
-              <h5><span><b>{{perfil_logado.nome}}</b></span><img src="{% static 'img/photo.jpg' %}" class="image-perfil w3-cicle" alt="My image"></h5>
+        <div class="w3-dropdown-hover w3-hide-small w3-right">
+          <button class="w3-button w3-padding-large item-menu"><i class="fa fa-search"></i></button>
+          <div class="w3-dropdown-content w3-bar-block w3-card-4">
+            <div class="busca">
+              <form class="w3-center" action="{% url 'pesquisar_usuario' %}" method="GET">
+                <input class="input-search" type="search" name="nome" placeholder="Buscar amigos..." required/>
+                <button class="w3-button w3-padding-large button-search">
+                  <i class="fa fa-search"></i>
+                </button>
+              </form>
             </div>
           </div>
         </div>
-      </div> 
+      </div>
     </header>
+
+    <div id="navDemo" class="w3-bar-block opcoes-cell w3-hide w3-hide-large w3-hide-medium w3-large menu-suspenso menu-opcoes">
+      <div class="w3-bar-item w3-button w3-padding-large" style="background-color: #009688; color: white;">
+        <img src="{% static 'img/photo.jpg' %}" class="image-perfil-cell" alt="Avatar">
+        <b>{{perfil_logado.nome}}</b>
+      </div>
+      <a href="#" class="w3-bar-item w3-button w3-padding-large link-opcoes">Alterar Foto</a>
+      <a href="#" class="w3-bar-item w3-button w3-padding-large link-opcoes">Alterar Senha</a>
+      <a href="#" class="w3-bar-item w3-button w3-padding-large link-opcoes">Ativar/Desativar Conta</a>
+      <a href="/logout/" class="w3-bar-item w3-button w3-padding-large link-opcoes">Sair</a>
+    </div>
+    <div id="navDemo1" class="w3-bar-block w3-theme-d4 w3-hide w3-hide-large w3-hide-medium w3-large menu-cell" style="float: left;">
+      <div style="background-color: white;">
+        <form action="{% url 'pesquisar_usuario' %}" method="GET">
+          <input class="search-cell" type="search" name="nome" placeholder="Buscar amigos..." required/>
+          <button class="w3-button w3-padding-large button-search button-cell">
+            <i class="fa fa-search"></i>
+          </button>
+        </form>
+      </div> 
+    </div>
+
     <div class="w3-row">
-      <nav class="w3-col  w3-cell w3-mobile align-text" style="width:20%; height: 100%;">
-        <h4 class="w3-panel w3-padding-16 w3-blue " style="margin-top: -5px; margin-left: 5%; margin-right: 5%;"><strong>Contatos</strong></h4>
-        {% with total_de_contatos=perfil_logado.contatos.count %}
-          {% if total_de_contatos %}
-            <ul class="list-group">
+      <nav class="w3-col  w3-cell w3-mobile" style="width:25%; margin-top: 25px;">
+        <h4 class="w3-round w3-center w3-panel w3-padding-16 w3-blue" style="margin-left: 5%; margin-right: 5%;"><b>Contatos<b></h4>
+        <div style="margin-left: 5%; margin-right: 5%;">
+          {% with total_de_contatos=perfil_logado.contatos.count %}
+            {% if total_de_contatos %}
+              <ul>
                 {% for contato in perfil_logado.contatos.all %}
-                    <li class="panel-body">
-                        <a href="{% url 'exibir' contato.id %}">{{contato.nome}}</a>
-                    </li>
+                  <li>
+                    <a href="{% url 'exibir' contato.id %}">{{contato.nome}}</a>
+                  </li>
                 {% endfor %}
-            </ul>
-          {% else %}
-              <div class="panel-body">
-                  <p>Você não possui contatos no momento :(</p>
+              </ul>
+            {% else %}
+              <div class="w3-card w3-white w3-round w3-center">
+                <p>Você não possui contatos no momento.</p>
               </div>
-          {% endif %}
-        {% endwith%}
+            {% endif %}
+          {% endwith%}
+        </div>
       </nav>
 
-      <section class="w3-col  w3-cell w3-mobile" style="width:55%; height: 100%;">
+      <section class="w3-col  w3-cell w3-mobile" style="width:50%; margin-top: 25px;">
         {% block body%}
             
         {% endblock %}
       </section>
 
-      <aside class="w3-col w3-cell w3-mobile align-text" style="width:25%; height: 100%;">
-        <div class="w3-row" style="height: 50%; margin-right: 5%; margin-left: 5%">
-          <h4 class="w3-panel w3-padding-16 w3-green" style="margin-top:-5px;">
-            <span><strong>Convites Recebidos</strong></span>
+      <aside class="w3-col  w3-cell w3-mobile" style="width:25%; margin-top: 25px;">
+        <div class="w3-row" style="margin-left: 5%; margin-right: 5%;">
+          <h4 class="w3-round w3-center w3-panel w3-padding-16 w3-green">
+            <b>Convites Recebidos<b>
             <i class="fa fa-arrow-left"></i>
           </h4>
-
+            {% with total=perfil_logado.convites_recebidos.count %}
+              {% if total %}
+                <div class="w3-white">
+                  {% for convite in perfil_logado.convites_recebidos.all %}
+                    <div class="w3-row">
+                      <div class="w3-col w3-cell" style="width: 33.333%;">
+                        <h4>{{ convite.solicitante.nome}}</h4>
+                      </div>
+                      <div class="w3-col w3-cell" style="width: 33.333%;">
+                        <a href="{% url 'aceitar' convite.id %}">Aceitar</a>
+                      </div>
+                      <div class="w3-col w3-cell" style="width: 33.333%;">
+                        <a href="{% url 'recusar' convite.id %}" class="card-link">Recusar</a>
+                      </div>
+                    </div>
+                  {% endfor %} 
+                </div> 
+              {% else %}
+                <div class="w3-card w3-white w3-round w3-center">
+                  <p>Não há convites no momento.</p>
+                </div>
+             {% endif %}
+          {% endwith %}
         </div>
-        <div class="w3-row" style="height: 50%; margin-right: 5%; margin-left: 5%">
-          <h4 class="w3-panel w3-padding-16 w3-green" style="margin-top:-5px;">
-            <span><strong>Convites Enviados</strong></span>
+        <div class="w3-row" style="margin-left: 5%; margin-right: 5%;">
+          <h4 class="w3-round w3-center w3-panel w3-padding-16 w3-green">
+            <b>Convites Enviados<b>
             <i class="fa fa-arrow-right"></i>
+          </h4>
+          <div class="w3-white">
+            {% for convite in perfil_logado.convites_feitos.all %}
+              <div class="w3-row">
+                <div class="w3-col w3-cell w3-center" style="width: 50%;">
+                  <h4>{{convite.convidado.nome}}</h4>
+                </div>
+                <div class="w3-col w3-cell w3-center" style="width: 50%;">
+                  <a href="{% url 'recusar' convite.id %}" class="w3-button btn-danger w3-round">Cancelar</a>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
         </div>
       </aside>
-
     </div>
 
   </body>
-</html>
+</html> 

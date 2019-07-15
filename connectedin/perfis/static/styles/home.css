@@ -1,16 +1,11 @@
 body {
-	padding-top: 5px;
-	background-color: #A4A4A4;
-	width: 100%;
-	height: 100%;
-	font-family: Arial, Tahoma, sans-serif;
-}
-.title{
-	color: white;
+    padding-top: 5px !important;
+    width: 100% !important;
+    height: 100% !important;
 }
 .w3-badge, .w3-tag {
     background-color: #009688 !important;
-    color: #fff;
+    color: #fff !important;
     display: inline-block;
     padding-left: 8px;
     padding-right: 8px;

@@ -25,8 +25,14 @@ def exibir_perfil(request, perfil_id):
 def convidar(request, perfil_id):
 	perfil_a_convidar = Perfil.objects.get(id=perfil_id)
 	perfil_logado = get_perfil_logado(request)
-	perfil_logado.convidar(perfil_a_convidar)
+	if perfil_logado.pode_convidar(perfil_a_convidar):
+		perfil_logado.convidar(perfil_a_convidar)
+		messages.success(request,'Convite foi enviado.')
+	else:
+		messages.error(request,'Não foi possivel enviar o convite.')
+
 	return redirect('index')
+
 
 @login_required
 def get_perfil_logado(request):
@@ -61,21 +67,39 @@ def alterar_senha(request):
 		if form.is_valid():
 			user = form.save()
 			update_session_auth_hash(request, user)
-			messages.success(request, 'Sua senha foi atualizada com sucesso!')
+			messages.success(request, 'Sua senha foi atualizada com sucesso.')
 			return redirect('alterar_senha')
 		else:
 			senha_exists = User.objects.filter(password=request.POST['old_password']).exists()
 			if senha_exists:
-				messages.error(request,'A senha atual não confere')
+				messages.error(request,'A senha atual não confere.')
 
 			elif request.POST['new_password2'] != request.POST['new_password1']:
-				messages.error(request, 'A confirmação da senha não confere com a nova senha')
+				messages.error(request, 'A confirmação da senha não confere com a nova senha.')
 			else:
-				messages.error(request, 'Verifique seus dados')
+				messages.error(request, 'Verifique seus dados.')
 
 			
 
 	else:
 		form = PasswordChangeForm(request.user)
-	
+
 	return render(request, 'alterar_senha.html', {'perfil_logado' : get_perfil_logado(request),'form': form})
+
+#Pesquisar usuário
+@login_required
+def pesquisar_usuario(request):
+	perfis = Perfil.objects.all()
+	perfil_logado = get_perfil_logado(request)
+	nome_buscado = request.GET('nome')
+	resultado = Perfil.objects.filter(nome__contains=nome_buscado) \
+							.exclude(nome=perfil_logado.nome) \
+							.exclude(bloqueado=True) \
+							.exclude(ativo=False)
+	contexto = {
+		"perfil": perfil_logado,
+		"resultado": resultado,
+		"nome_buscado": nome_buscado
+		}
+	return render(request, 'busca.html', contexto)
+
