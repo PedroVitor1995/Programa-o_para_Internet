@@ -33,7 +33,7 @@ class RegistrarUsuarioView(View):
 			perfil.save()
 			messages.success(request,'Cadastro realizado com sucesso')
 
-			return redirect('login')
+			return redirect('registrar')
 
 		else:
 			if request.POST['senha_confirmar'] != request.POST['senha']:
@@ -41,8 +41,3 @@ class RegistrarUsuarioView(View):
 
 
 		return render(request,self.template_name,{'form':form})
-
-
-#Recuperar senha
-def redefinir_senha(request):
-	pass

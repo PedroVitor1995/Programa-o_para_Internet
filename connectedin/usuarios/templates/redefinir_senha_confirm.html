@@ -1,0 +1,12 @@
+{% extends 'base_usuario.html' %}
+{% block body %}
+	<h1>Defina uma nova senha!</h1>
+	<form method="POST">
+		{% csrf_token %}
+		<input class="panel-body panel form-control panel" placeholder="Nova Senha" type="password" name="new_password1" required="" id="id_new_password1">
+	  	<input class="panel-body panel form-control panel" placeholder="Confirmar Senha" type="password" name="new_password2" required="" id="id_new_password2">
+	  	<button class="btn btn-lg btn-primary btn-block">
+	  		<a href="{% url 'redefinir_senha_complete' %}" style="color: white;">Alterar Senha</a>
+	  	</button>
+	</form>
+{% endblock %}

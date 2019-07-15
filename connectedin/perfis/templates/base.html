@@ -21,7 +21,7 @@
         <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large nav-color item-menu opcoes-cell
         " href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
         <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large nav-color item-menu opcoes-cell" href="javascript:void(0);" onclick="openNav1()"><i class="fa fa-search"></i></a>
-        <a href="{% url 'index' %}" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>ConnectedIn</a>
+        <a href="{% url 'index' %}" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i><b>ConnectedIn</b></a>
         <div class="w3-dropdown-hover w3-hide-small w3-right" title="User">
           <button class="w3-button w3-padding-large logo-user">
             <span style="margin-left: 5px;"><b style="color: white;">{{perfil_logado.nome}}</b></span>
@@ -39,7 +39,7 @@
           <button class="w3-button w3-padding-large" title="Options"><b class="item-menu">Opções</b></button>     
           <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">
             <a href="#" class="w3-bar-item w3-button">Alterar Foto</a>
-            <a href="#" class="w3-bar-item w3-button">Alterar Senha</a>
+            <a href="{% url 'alterar_senha'%}" class="w3-bar-item w3-button">Alterar Senha</a>
             <a href="#" class="w3-bar-item w3-button">Desativar Conta</a>
           </div>
         </div>
@@ -65,7 +65,7 @@
         <b>{{perfil_logado.nome}}</b>
       </div>
       <a href="#" class="w3-bar-item w3-button w3-padding-large link-opcoes">Alterar Foto</a>
-      <a href="#" class="w3-bar-item w3-button w3-padding-large link-opcoes">Alterar Senha</a>
+      <a href="{% url 'alterar_senha'%}" class="w3-bar-item w3-button w3-padding-large link-opcoes">Alterar Senha</a>
       <a href="#" class="w3-bar-item w3-button w3-padding-large link-opcoes">Ativar/Desativar Conta</a>
       <a href="/logout/" class="w3-bar-item w3-button w3-padding-large link-opcoes">Sair</a>
     </div>
@@ -82,17 +82,22 @@
 
     <div class="w3-row">
       <nav class="w3-col  w3-cell w3-mobile" style="width:25%; margin-top: 25px;">
-        <h4 class="w3-round w3-center w3-panel w3-padding-16 w3-blue" style="margin-left: 5%; margin-right: 5%;"><b>Contatos<b></h4>
-        <div style="margin-left: 5%; margin-right: 5%;">
+        <div class="w3-row" style="margin-left: 5%; margin-right: 5%;">
+          <h4 class="w3-round w3-center w3-panel w3-padding-16 w3-blue">
+            <b>Contatos<b>
+            <i class="fa fa-user"></i>
+          </h4>
           {% with total_de_contatos=perfil_logado.contatos.count %}
             {% if total_de_contatos %}
-              <ul>
+              <div class="w3-white">
                 {% for contato in perfil_logado.contatos.all %}
-                  <li>
-                    <a href="{% url 'exibir' contato.id %}">{{contato.nome}}</a>
-                  </li>
+                  <div class="w3-row">
+                    <div class="w3-col w3-cell w3-center" style="width: 100%;">
+                    <h4><b><a href="{% url 'exibir' contato.id %}">{{contato.nome}}</a></b></h4>
+                    </div>
+                  </div>
                 {% endfor %}
-              </ul>
+              </div>
             {% else %}
               <div class="w3-card w3-white w3-round w3-center">
                 <p>Você não possui contatos no momento.</p>
@@ -110,51 +115,60 @@
 
       <aside class="w3-col  w3-cell w3-mobile" style="width:25%; margin-top: 25px;">
         <div class="w3-row" style="margin-left: 5%; margin-right: 5%;">
-          <h4 class="w3-round w3-center w3-panel w3-padding-16 w3-green">
+          <h4 class="w3-round w3-center w3-panel w3-padding-16 w3-theme-d4">
             <b>Convites Recebidos<b>
             <i class="fa fa-arrow-left"></i>
           </h4>
-            {% with total=perfil_logado.convites_recebidos.count %}
-              {% if total %}
-                <div class="w3-white">
-                  {% for convite in perfil_logado.convites_recebidos.all %}
-                    <div class="w3-row">
-                      <div class="w3-col w3-cell" style="width: 33.333%;">
-                        <h4>{{ convite.solicitante.nome}}</h4>
-                      </div>
-                      <div class="w3-col w3-cell" style="width: 33.333%;">
-                        <a href="{% url 'aceitar' convite.id %}">Aceitar</a>
-                      </div>
-                      <div class="w3-col w3-cell" style="width: 33.333%;">
-                        <a href="{% url 'recusar' convite.id %}" class="card-link">Recusar</a>
-                      </div>
+          {% with total=perfil_logado.convites_recebidos.count %}
+            {% if total %}
+              <div class="w3-white">
+                {% for convite in perfil_logado.convites_recebidos.all %}
+                  <div class="w3-row">
+                    <div class="w3-col w3-cell w3-center" style="width: 33.333%;">
+                      <h4><b>{{ convite.solicitante.nome}}</b></h4>
                     </div>
-                  {% endfor %} 
-                </div> 
-              {% else %}
-                <div class="w3-card w3-white w3-round w3-center">
-                  <p>Não há convites no momento.</p>
-                </div>
-             {% endif %}
+                    <div class="w3-col w3-cell w3-center" style="width: 33.333%;">
+                      <a href="{% url 'aceitar' convite.id %}" class="btn-primary w3-round w3-button">Aceitar</a>
+                    </div>
+                    <div class="w3-col w3-cell w3-center" style="width: 33.333%;">
+                      <a href="{% url 'recusar' convite.id %}" class="btn-danger w3-round w3-button">Recusar</a>
+                    </div>
+                    <hr>
+                  </div>
+                {% endfor %} 
+              </div> 
+            {% else %}
+              <div class="w3-card w3-white w3-round w3-center">
+                <p>Não há convites recebidos no momento.</p>
+              </div>
+            {% endif %}
           {% endwith %}
         </div>
         <div class="w3-row" style="margin-left: 5%; margin-right: 5%;">
-          <h4 class="w3-round w3-center w3-panel w3-padding-16 w3-green">
+          <h4 class="w3-round w3-center w3-panel w3-padding-16 w3-theme-d4">
             <b>Convites Enviados<b>
             <i class="fa fa-arrow-right"></i>
           </h4>
-          <div class="w3-white">
-            {% for convite in perfil_logado.convites_feitos.all %}
-              <div class="w3-row">
-                <div class="w3-col w3-cell w3-center" style="width: 50%;">
-                  <h4>{{convite.convidado.nome}}</h4>
-                </div>
-                <div class="w3-col w3-cell w3-center" style="width: 50%;">
-                  <a href="{% url 'recusar' convite.id %}" class="w3-button btn-danger w3-round">Cancelar</a>
-                </div>
+          {% with total=perfil_logado.convites_recebidos.count %}
+            {% if total %}
+              <div class="w3-white">
+                {% for convite in perfil_logado.convites_feitos.all %}
+                  <div class="w3-row">
+                    <div class="w3-col w3-cell w3-center" style="width: 50%;">
+                      <h4><b>{{convite.convidado.nome}}</b></h4>
+                    </div>
+                    <div class="w3-col w3-cell w3-center" style="width: 50%;">
+                      <a href="{% url 'recusar' convite.id %}" class="w3-button btn-danger w3-round">Cancelar</a>
+                    </div>
+                  </div>
+                {% endfor %}
               </div>
-            {% endfor %}
-          </div>
+            {% else %}
+                <div class="w3-card w3-white w3-round w3-center">
+                <p>Não há convites enviados no momento.</p>
+              </div>
+            {% endif %}
+          {% endwith %}
         </div>
       </aside>
     </div>

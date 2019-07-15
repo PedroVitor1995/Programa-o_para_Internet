@@ -8,9 +8,10 @@ class Perfil(models.Model):
 	nome_empresa = models.CharField(max_length=60, null=False)
 	contatos = models.ManyToManyField('self')
 	usuario = models.OneToOneField(User,related_name="perfil",on_delete=models.CASCADE)
-	bloqueado = models.BooleanField(default=False)
-	ativo = models.BooleanField(default=True)
-
+	contato_bloqueado = models.BooleanField(default=False)
+	ativa = models.BooleanField(default=True)
+	justificativa = models.TextField(null=True)
+	
 	@property
 	def nome(self):
 		return self.usuario.username

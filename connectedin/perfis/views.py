@@ -7,6 +7,11 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
 
 # Create your views here.
+#Página inicial
+@login_required
+def home(request):
+	return render(request,'home.html',{'post':post})
+
 @login_required
 def index(request):
 	return render(request, 'index.html',{'perfis': Perfil.objects.all(),
@@ -17,6 +22,10 @@ def exibir_perfil(request, perfil_id):
 	perfil = Perfil.objects.get(id=perfil_id)
 	perfil_logado = get_perfil_logado(request)
 	ja_eh_contato = perfil in perfil_logado.contatos.all()
+
+	if perfil_logado.ativa == False or perfil_logado.bloqueado == True:
+		return render(request,'status.html', {'perfil_logado': perfil_logado})
+
 	return render(request, 'perfil.html',{'perfil' : perfil,
                    'perfil_logado' : get_perfil_logado(request),
                    'ja_eh_contato':ja_eh_contato})
@@ -27,9 +36,6 @@ def convidar(request, perfil_id):
 	perfil_logado = get_perfil_logado(request)
 	if perfil_logado.pode_convidar(perfil_a_convidar):
 		perfil_logado.convidar(perfil_a_convidar)
-		messages.success(request,'Convite foi enviado.')
-	else:
-		messages.error(request,'Não foi possivel enviar o convite.')
 
 	return redirect('index')
 
@@ -85,6 +91,14 @@ def alterar_senha(request):
 		form = PasswordChangeForm(request.user)
 
 	return render(request, 'alterar_senha.html', {'perfil_logado' : get_perfil_logado(request),'form': form})
+
+@login_required
+#Bloquear usuário
+def bloquear(request, perfil_id):
+    perfil = Perfil.objects.get(id=perfil_id)
+    perfil.contato_bloqueado = True
+    perfil.save()
+    return redirect('index')
 
 #Pesquisar usuário
 @login_required

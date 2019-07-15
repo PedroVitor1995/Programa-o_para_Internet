@@ -1,0 +1,12 @@
+{% extends "base_usuario.html" %}
+{% block body %}
+  <h1>Esqueceu sua senha?</h1>
+  <p>Digite seu endereço de e-mail abaixo e enviaremos instruções por e-mail para configurar uma nova senha.</p>
+  <form method="POST">
+  	{% csrf_token %}
+  	<input class="panel-body panel form-control panel" type="email" placeholder="Email" name="email" maxlength="254" required="" id="id_email"></p>
+  	<button class="btn btn-lg btn-primary btn-block">
+  		<a href="{% url 'redefinir_senha_done' %}" style="color: white;">Envie-me instruções!</a>
+  	</button>
+  </form>
+{% endblock %}

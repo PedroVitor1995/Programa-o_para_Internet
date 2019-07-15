@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block body %}
+	{% if perfil_logado.ativa == False %}
+		<h1>Conta inativa</h1>
+		<form action="{% url 'reativar' %}" method="POST" accept-charset="utf-8">
+			{% csrf_token %}
+			<button type="submit" class="btn btn-primary">Reativar Conta</button>
+		</form>
+	{% endif %}
+
+	{% if perfil_logado.bloqueado == True %}
+		<h1>Perfil estar bloqueado entre em contato com o administrador.</h1>
+	{% endif %}
+{% endblock %}
