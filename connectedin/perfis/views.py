@@ -117,10 +117,22 @@ def pesquisar_usuario(request):
 		}
 	return render(request, 'busca.html', contexto)
 
-def tornar_superusuariO(request,  perfil_id):
+def tornar_superusuario(request,  perfil_id):
 	perfil = Perfil.objects.get(id=perfil_id)
 	perfil.usuario.is_superuser = True
 	perfil.usuario.save()
 	perfil.save()
 	messages.success(request, 'Este perfil agora é super usuario')
+	return redirect('index')
+
+def curtir(request, post_id):
+	postagem = Postagem.objects.get(id=post_id)
+	curtida = Curtida(perfil=get_perfil_logado(request), post=postagem)
+	curtida.save()
+	return redirect('index')
+
+def descurtir(request, post_id):
+	postagem = Postagem.objects.get(id=post_id)
+	curtida = Curtida(perfil=get_perfil_logado(request), post=postagem)
+	curtida.descurtir()
 	return redirect('index')

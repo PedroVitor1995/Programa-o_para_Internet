@@ -25,6 +25,10 @@ class Perfil(models.Model):
 	def superuser(self):
 		return self.usuario._is_superuser
 
+	@property
+	def get_postagens(self):
+		return Postagem.objects.filter(id=self.id)
+
 	def desfazer(self, perfil_id):
 		self.contatos.remove(perfil_id)
 		self.save()
@@ -50,6 +54,11 @@ class Perfil(models.Model):
 	def bloquear(self, perfil_a_bloquear):
 		self.contatos_bloqueados.add(perfil_a_bloquear)
 
+	def compartilhar(self, postagem_id):
+		minhas_postagems = Postagem.objects.filter(id=self.id).all()
+		postagem = Postagem.objects.get(id=postagem_id)
+		minhas_postagems.append(postagem) #não tenho certeza se é assim
+
 class Convite(models.Model):
 	solicitante = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name='convites_feitos')
 	convidado = models.ForeignKey(Perfil, on_delete=models.CASCADE , related_name='convites_recebidos')
@@ -69,6 +78,22 @@ class Postagem(models.Model):
 
 	class Meta:
 		ordering = ['-data_postagem']
+
+	@property
+	def curtidas(self):
+		lista_curtidas = []
+		for like in self.curtidas.all():
+			curtidas.append(like.perfil.id)
+
+		return lista_curtidas
+
+	@property
+	def total_curtidas(self):
+		curtidas = Curtida.objects.filter(post=self).exists()
+		
+		if curtidas:
+			return Curtida.objects.filter(post=self).count
+		return 0
 
 	def __str__(self):
 		return self.texto_postagem
