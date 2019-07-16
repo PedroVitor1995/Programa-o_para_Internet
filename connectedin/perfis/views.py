@@ -117,3 +117,10 @@ def pesquisar_usuario(request):
 		}
 	return render(request, 'busca.html', contexto)
 
+def tornar_superusuariO(request,  perfil_id):
+	perfil = Perfil.objects.get(id=perfil_id)
+	perfil.usuario.is_superuser = True
+	perfil.usuario.save()
+	perfil.save()
+	messages.success(request, 'Este perfil agora é super usuario')
+	return redirect('index')

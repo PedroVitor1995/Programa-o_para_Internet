@@ -21,6 +21,10 @@ class Perfil(models.Model):
 	def email(self):
 		return self.usuario.email
 
+	@property
+	def superuser(self):
+		return self.usuario._is_superuser
+
 	def desfazer(self, perfil_id):
 		self.contatos.remove(perfil_id)
 		self.save()
