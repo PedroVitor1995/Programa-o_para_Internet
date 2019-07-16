@@ -8,10 +8,11 @@ class Perfil(models.Model):
 	nome_empresa = models.CharField(max_length=60, null=False)
 	contatos = models.ManyToManyField('self')
 	usuario = models.OneToOneField(User,related_name="perfil",on_delete=models.CASCADE)
-	contato_bloqueado = models.BooleanField(default=False)
 	ativa = models.BooleanField(default=True)
 	justificativa = models.TextField(null=True)
-	
+	contatos_bloqueados = models.ManyToManyField('Perfil', related_name='usuarios_bloqueados')
+
+
 	@property
 	def nome(self):
 		return self.usuario.username
@@ -42,6 +43,9 @@ class Perfil(models.Model):
 		if self.pode_convidar(perfil_convidado):
 			Convite(solicitante=self, convidado=perfil_convidado).save()
 
+	def bloquear(self, perfil_a_bloquear):
+		self.contatos_bloqueados.add(perfil_a_bloquear)
+
 class Convite(models.Model):
 	solicitante = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name='convites_feitos')
 	convidado = models.ForeignKey(Perfil, on_delete=models.CASCADE , related_name='convites_recebidos')
@@ -52,16 +56,6 @@ class Convite(models.Model):
 		self.delete()
 		
 	def recusar(self):
-		self.delete()
-
-class Bloqueio(models.Model):
-	bloqueador = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name='bloqueador')
-	bloqueado = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name='bloqueado')
-
-	def __str__():
-		return self.bloqueado.nome
-
-	def desbloquear(self):
 		self.delete()
 
 class Postagem(models.Model):

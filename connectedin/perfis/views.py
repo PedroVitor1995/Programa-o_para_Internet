@@ -23,7 +23,7 @@ def exibir_perfil(request, perfil_id):
 	perfil_logado = get_perfil_logado(request)
 	ja_eh_contato = perfil in perfil_logado.contatos.all()
 
-	if perfil_logado.ativa == False or perfil_logado.bloqueado == True:
+	if perfil_logado.ativa == False:
 		return render(request,'status.html', {'perfil_logado': perfil_logado})
 
 	return render(request, 'perfil.html',{'perfil' : perfil,
@@ -95,10 +95,10 @@ def alterar_senha(request):
 @login_required
 #Bloquear usuário
 def bloquear(request, perfil_id):
-    perfil = Perfil.objects.get(id=perfil_id)
-    perfil.contato_bloqueado = True
-    perfil.save()
-    return redirect('index')
+	perfil_a_bloquear = Perfil.objects.get(id=perfil_id)
+	perfil_bloqueador = get_perfil_logado(request)
+	perfil_bloqueador.bloquear(perfil_a_bloquear)
+	return desfazer(request, perfil_a_bloquear.perfil_id)
 
 #Pesquisar usuário
 @login_required

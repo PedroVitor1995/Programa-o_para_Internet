@@ -3,7 +3,7 @@ from perfis import views
 
 urlpatterns = [
 	path('', views.home, name='home'),
-	path('index', views.index, name='index'),
+	path('index/', views.index, name='index'),
     path('perfil/<int:perfil_id>/', views.exibir_perfil, name='exibir'),
     path('perfil/<int:perfil_id>/convidar/', views.convidar, name='convidar'),
     path('perfil/<int:perfil_id>/desfazer/', views.desfazer, name='desfazer'),
