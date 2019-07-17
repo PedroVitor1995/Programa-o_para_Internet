@@ -22,7 +22,11 @@ class Perfil(models.Model):
 
 	@property
 	def superuser(self):
-		return self.usuario._is_superuser
+		return self.usuario.is_superuser
+
+	@property
+	def get_postagens(self):
+		return Postagem.objects.filter(id=self.id)
 
 	def desfazer(self, perfil_id):
 		self.contatos.remove(perfil_id)
@@ -46,6 +50,17 @@ class Perfil(models.Model):
 		if self.pode_convidar(perfil_convidado):
 			Convite(solicitante=self, convidado=perfil_convidado).save()
 
+<<<<<<< HEAD
+=======
+	def bloquear(self, perfil_a_bloquear):
+		self.contatos_bloqueados.add(perfil_a_bloquear)
+
+	def compartilhar(self, postagem_id):
+		minhas_postagems = Postagem.objects.filter(id=self.id).all()
+		postagem = Postagem.objects.get(id=postagem_id)
+		minhas_postagems.append(postagem) #não tenho certeza se é assim
+
+>>>>>>> eb8ab2b85d20b1d5fa04c7258dfb7922f5545dd1
 class Convite(models.Model):
 	solicitante = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name='convites_feitos')
 	convidado = models.ForeignKey(Perfil, on_delete=models.CASCADE , related_name='convites_recebidos')
@@ -64,6 +79,22 @@ class Postagem(models.Model):
 	perfil = models.ForeignKey(Perfil, related_name='usuario_postagem', on_delete=models.CASCADE)
 
 
+	@property
+	def curtidas(self):
+		lista_curtidas = []
+		for like in self.curtidas.all():
+			lista_curtidas.append(like.perfil.id)
+
+		return lista_curtidas
+
+	@property
+	def total_curtidas(self):
+		curtidas = Curtida.objects.filter(post=self).exists()
+		
+		if curtidas:
+			return Curtida.objects.filter(post=self).count
+		return 0
+
 	def __str__(self):
 		return self.texto_postagem
 
@@ -74,5 +105,5 @@ class Curtida(models.Model):
 	perfil = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name='curti')
 	post = models.ForeignKey(Postagem, on_delete=models.CASCADE, related_name='curtidas')
 
-	def descurtir():
+	def descurtir(self):
 		self.delete()

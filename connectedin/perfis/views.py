@@ -1,3 +1,5 @@
+from django.views import View
+
 from perfis.models import *
 from perfis.forms import *
 from django.shortcuts import render,redirect
@@ -128,6 +130,7 @@ def pesquisar_usuario(request):
 							.exclude(nome=perfil_logado.nome) \
 							.exclude(bloqueado=True) \
 							.exclude(ativo=False)
+<<<<<<< HEAD
 		contexto = {
 			"perfil": perfil_logado,
 			"resultado": resultado,
@@ -135,6 +138,14 @@ def pesquisar_usuario(request):
 			}
 		return render(request, 'busca.html', contexto)
 
+=======
+	contexto = {
+		"perfil": perfil_logado,
+		"resultado": resultado,
+		"nome_buscado": nome_buscado
+		}
+	return render(request, 'busca.html', contexto)
+>>>>>>> eb8ab2b85d20b1d5fa04c7258dfb7922f5545dd1
 
 def tornar_superusuario(request,  perfil_id):
 	perfil = Perfil.objects.get(id=perfil_id)
@@ -144,6 +155,7 @@ def tornar_superusuario(request,  perfil_id):
 	messages.success(request, 'Este perfil agora é super usuario')
 	return redirect('index')
 
+<<<<<<< HEAD
 #Incluir postagem
 @login_required
 @transaction.atomic
@@ -159,3 +171,30 @@ def postar(request):
 	else:
 		messages.error(request, "Não foi possivel criar post")
 		return render(request,'timeline.html',{'form':form})
+=======
+@login_required
+def curtir(request, post_id):
+	postagem = Postagem.objects.get(id=post_id)
+	curtida = Curtida(perfil=get_perfil_logado(request), post=postagem)
+	curtida.save()
+	return redirect('index')
+
+@login_required
+def descurtir(request, post_id):
+	postagem = Postagem.objects.get(id=post_id)
+	curtida = Curtida(perfil=get_perfil_logado(request), post=postagem)
+	curtida.descurtir()
+	return redirect('index')
+
+@login_required
+class PostarView(View):
+	def postar(self, request):
+		form = PostForm(request.POST, request.FILES)
+		if form.is_valid:
+			dados_form = form.cleaned_data
+			postagem = Postagem(texto_postagem=dados_form['texto_postagem'], perfil=get_perfil_logado, imagem=dados_form['imagem'])
+			postagem.save()
+			return redirect('index')
+
+		return redirect('index')
+>>>>>>> eb8ab2b85d20b1d5fa04c7258dfb7922f5545dd1
