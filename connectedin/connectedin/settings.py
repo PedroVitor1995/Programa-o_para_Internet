@@ -145,3 +145,8 @@ LANGUAGES = (
     ('de', u'German'),
 )
 LOCALE_PATHS = ( os.path.join(BASE_DIR, "locale"), )
+
+
+# Confihuração de imagens 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

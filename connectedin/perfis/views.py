@@ -1,23 +1,33 @@
 from perfis.models import *
+from perfis.forms import *
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
+from django.db import transaction
+from django.core.paginator import Paginator, InvalidPage
 
 # Create your views here.
-#Página inicial
+
+#Timeline
 @login_required
-def home(request):
-	return render(request,'home.html',{'post':post})
+def timeline(request):
+	posts = Postagem.objects.all()
+
+	return render(request,'home.html',{'perfis': Perfil.objects.all(),\
+                   'perfil_logado' : get_perfil_logado(request),\
+                   'posts':posts})
 
 @login_required
+@transaction.atomic
 def index(request):
-	return render(request, 'index.html',{'perfis': Perfil.objects.all(),
+	return render(request, 'index.html',{'perfis': Perfil.objects.all(),\
                    'perfil_logado' : get_perfil_logado(request)})
 
 @login_required
+@transaction.atomic
 def exibir_perfil(request, perfil_id):
 	perfil = Perfil.objects.get(id=perfil_id)
 	perfil_logado = get_perfil_logado(request)
@@ -31,6 +41,7 @@ def exibir_perfil(request, perfil_id):
                    'ja_eh_contato':ja_eh_contato})
 
 @login_required
+@transaction.atomic
 def convidar(request, perfil_id):
 	perfil_a_convidar = Perfil.objects.get(id=perfil_id)
 	perfil_logado = get_perfil_logado(request)
@@ -45,6 +56,7 @@ def get_perfil_logado(request):
 	return request.user.perfil
 
 @login_required
+@transaction.atomic
 def aceitar(request, convite_id):
 	convite = Convite.objects.get(id=convite_id)
 	convite.aceitar()
@@ -52,6 +64,7 @@ def aceitar(request, convite_id):
 
 #Rejeitar solicitação
 @login_required
+@transaction.atomic
 def recusar(request, convite_id):
 	convite = Convite.objects.get(id=convite_id)
 	convite.recusar()
@@ -59,6 +72,7 @@ def recusar(request, convite_id):
 
 #Desfazer amizade
 @login_required
+@transaction.atomic
 def desfazer(request,perfil_id):
 	perfil_a_desfazer = Perfil.objects.get(id=perfil_id)
 	perfil_logado = get_perfil_logado(request)
@@ -67,6 +81,7 @@ def desfazer(request,perfil_id):
 	 	
 #Alterar senha
 @login_required
+@transaction.atomic
 def alterar_senha(request):
 	if request.method == 'POST':
 		form = PasswordChangeForm(request.user, request.POST)
@@ -92,35 +107,55 @@ def alterar_senha(request):
 
 	return render(request, 'alterar_senha.html', {'perfil_logado' : get_perfil_logado(request),'form': form})
 
-@login_required
 #Bloquear usuário
+@login_required
+@transaction.atomic
 def bloquear(request, perfil_id):
-	perfil_a_bloquear = Perfil.objects.get(id=perfil_id)
-	perfil_bloqueador = get_perfil_logado(request)
-	perfil_bloqueador.bloquear(perfil_a_bloquear)
-	return desfazer(request, perfil_a_bloquear.perfil_id)
+	if request.user.is_superuser:
+		perfil = Perfil.objects.get(id=perfil_id)
+		perfil.contato_bloqueado = True
+		perfil.save()
+		return redirect('index')
 
 #Pesquisar usuário
 @login_required
+@transaction.atomic
 def pesquisar_usuario(request):
-	perfis = Perfil.objects.all()
 	perfil_logado = get_perfil_logado(request)
-	nome_buscado = request.GET('nome')
-	resultado = Perfil.objects.filter(nome__contains=nome_buscado) \
+	nome_buscado = request.GET['nome']
+	if nome_buscado:
+		resultado = Perfil.objects.filter(nome__contains=nome_buscado) \
 							.exclude(nome=perfil_logado.nome) \
 							.exclude(bloqueado=True) \
 							.exclude(ativo=False)
-	contexto = {
-		"perfil": perfil_logado,
-		"resultado": resultado,
-		"nome_buscado": nome_buscado
-		}
-	return render(request, 'busca.html', contexto)
+		contexto = {
+			"perfil": perfil_logado,
+			"resultado": resultado,
+			"nome_buscado": nome_buscado
+			}
+		return render(request, 'busca.html', contexto)
 
-def tornar_superusuariO(request,  perfil_id):
+
+def tornar_superusuario(request,  perfil_id):
 	perfil = Perfil.objects.get(id=perfil_id)
 	perfil.usuario.is_superuser = True
 	perfil.usuario.save()
 	perfil.save()
 	messages.success(request, 'Este perfil agora é super usuario')
 	return redirect('index')
+
+#Incluir postagem
+@login_required
+@transaction.atomic
+def postar(request):
+	if request.method == 'POST':
+		form = PostagemForm(request.POST)
+		if form.is_valid():
+			model_instance = form.save(commit=False)
+			model_instance.usuario = get_perfil_logado(request)
+			model_instance.save()
+			messages.success(request,"Post criado com sucesso")
+			return redirect('timeline')
+	else:
+		messages.error(request, "Não foi possivel criar post")
+		return render(request,'timeline.html',{'form':form})

@@ -1,5 +1,7 @@
 from django import forms
+from django.forms import ModelForm
 from django.contrib.auth.models import User
+from perfis.models import Postagem
 
 class RegistrarUsuarioForm(forms.Form):
 	nome = forms.CharField(required=True)

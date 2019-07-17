@@ -21,7 +21,7 @@
         <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large nav-color item-menu opcoes-cell
         " href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
         <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large nav-color item-menu opcoes-cell" href="javascript:void(0);" onclick="openNav1()"><i class="fa fa-search"></i></a>
-        <a href="{% url 'index' %}" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i><b>ConnectedIn</b></a>
+        <a href="{% url 'timeline' %}" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i><b>ConnectedIn</b></a>
         <div class="w3-dropdown-hover w3-hide-small w3-right" title="User">
           <button class="w3-button w3-padding-large logo-user">
             <span style="margin-left: 5px;"><b style="color: white;">{{perfil_logado.nome}}</b></span>
@@ -113,7 +113,7 @@
         {% endblock %}
       </section>
 
-      <aside class="w3-col  w3-cell w3-mobile" style="width:25%; margin-top: 25px;">
+      <aside class="w3-col  w3-cell w3-mobile w3-right" style="width:25%; margin-top: 25px;">
         <div class="w3-row" style="margin-left: 5%; margin-right: 5%;">
           <h4 class="w3-round w3-center w3-panel w3-padding-16 w3-theme-d4">
             <b>Convites Recebidos<b>
@@ -149,7 +149,7 @@
             <b>Convites Enviados<b>
             <i class="fa fa-arrow-right"></i>
           </h4>
-          {% with total=perfil_logado.convites_recebidos.count %}
+          {% with total=perfil_logado.convites_feitos.count %}
             {% if total %}
               <div class="w3-white">
                 {% for convite in perfil_logado.convites_feitos.all %}
