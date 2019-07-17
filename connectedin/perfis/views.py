@@ -1,4 +1,7 @@
+from django.views import View
+
 from perfis.models import *
+from perfis.forms import *
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -136,3 +139,14 @@ def descurtir(request, post_id):
 	curtida = Curtida(perfil=get_perfil_logado(request), post=postagem)
 	curtida.descurtir()
 	return redirect('index')
+
+class PostarView(View):
+	def postar(self, request):
+		form = PostForm(request.POST, request.FILES)
+		if form.is_valid:
+			dados_form = form.cleaned_data
+			postagem = Postagem(texto_postagem=dados_form['texto_postagem'], perfil=get_perfil_logado, imagem=dados_form['imagem'])
+			postagem.save()
+			return redirect('index')
+
+		return redirect('index')

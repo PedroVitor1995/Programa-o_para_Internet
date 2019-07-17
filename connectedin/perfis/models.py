@@ -23,7 +23,7 @@ class Perfil(models.Model):
 
 	@property
 	def superuser(self):
-		return self.usuario._is_superuser
+		return self.usuario.is_superuser
 
 	@property
 	def get_postagens(self):
@@ -83,7 +83,7 @@ class Postagem(models.Model):
 	def curtidas(self):
 		lista_curtidas = []
 		for like in self.curtidas.all():
-			curtidas.append(like.perfil.id)
+			lista_curtidas.append(like.perfil.id)
 
 		return lista_curtidas
 
@@ -105,5 +105,5 @@ class Curtida(models.Model):
 	perfil = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name='curti')
 	post = models.ForeignKey(Postagem, on_delete=models.CASCADE, related_name='curtidas')
 
-	def descurtir():
+	def descurtir(self):
 		self.delete()
