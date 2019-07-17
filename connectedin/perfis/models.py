@@ -50,17 +50,11 @@ class Perfil(models.Model):
 		if self.pode_convidar(perfil_convidado):
 			Convite(solicitante=self, convidado=perfil_convidado).save()
 
-<<<<<<< HEAD
-=======
-	def bloquear(self, perfil_a_bloquear):
-		self.contatos_bloqueados.add(perfil_a_bloquear)
-
 	def compartilhar(self, postagem_id):
 		minhas_postagems = Postagem.objects.filter(id=self.id).all()
 		postagem = Postagem.objects.get(id=postagem_id)
 		minhas_postagems.append(postagem) #não tenho certeza se é assim
 
->>>>>>> eb8ab2b85d20b1d5fa04c7258dfb7922f5545dd1
 class Convite(models.Model):
 	solicitante = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name='convites_feitos')
 	convidado = models.ForeignKey(Perfil, on_delete=models.CASCADE , related_name='convites_recebidos')

@@ -130,7 +130,6 @@ def pesquisar_usuario(request):
 							.exclude(nome=perfil_logado.nome) \
 							.exclude(bloqueado=True) \
 							.exclude(ativo=False)
-<<<<<<< HEAD
 		contexto = {
 			"perfil": perfil_logado,
 			"resultado": resultado,
@@ -138,14 +137,12 @@ def pesquisar_usuario(request):
 			}
 		return render(request, 'busca.html', contexto)
 
-=======
 	contexto = {
 		"perfil": perfil_logado,
 		"resultado": resultado,
 		"nome_buscado": nome_buscado
 		}
 	return render(request, 'busca.html', contexto)
->>>>>>> eb8ab2b85d20b1d5fa04c7258dfb7922f5545dd1
 
 def tornar_superusuario(request,  perfil_id):
 	perfil = Perfil.objects.get(id=perfil_id)
@@ -155,23 +152,7 @@ def tornar_superusuario(request,  perfil_id):
 	messages.success(request, 'Este perfil agora é super usuario')
 	return redirect('index')
 
-<<<<<<< HEAD
-#Incluir postagem
-@login_required
-@transaction.atomic
-def postar(request):
-	if request.method == 'POST':
-		form = PostagemForm(request.POST)
-		if form.is_valid():
-			model_instance = form.save(commit=False)
-			model_instance.usuario = get_perfil_logado(request)
-			model_instance.save()
-			messages.success(request,"Post criado com sucesso")
-			return redirect('timeline')
-	else:
-		messages.error(request, "Não foi possivel criar post")
-		return render(request,'timeline.html',{'form':form})
-=======
+
 @login_required
 def curtir(request, post_id):
 	postagem = Postagem.objects.get(id=post_id)
@@ -197,4 +178,3 @@ class PostarView(View):
 			return redirect('index')
 
 		return redirect('index')
->>>>>>> eb8ab2b85d20b1d5fa04c7258dfb7922f5545dd1

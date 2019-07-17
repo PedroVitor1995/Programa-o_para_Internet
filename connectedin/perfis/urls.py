@@ -3,7 +3,6 @@ from perfis import views
 
 urlpatterns = [
 	path('', views.timeline, name='timeline'),
-    path('postar/', views.postar, name='postar'),
 	path('index/', views.index, name='index'),
     path('perfil/<int:perfil_id>/', views.exibir_perfil, name='exibir'),
     path('perfil/<int:perfil_id>/convidar/', views.convidar, name='convidar'),
