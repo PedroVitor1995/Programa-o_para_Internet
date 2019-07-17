@@ -128,18 +128,21 @@ def tornar_superusuario(request,  perfil_id):
 	messages.success(request, 'Este perfil agora é super usuario')
 	return redirect('index')
 
+@login_required
 def curtir(request, post_id):
 	postagem = Postagem.objects.get(id=post_id)
 	curtida = Curtida(perfil=get_perfil_logado(request), post=postagem)
 	curtida.save()
 	return redirect('index')
 
+@login_required
 def descurtir(request, post_id):
 	postagem = Postagem.objects.get(id=post_id)
 	curtida = Curtida(perfil=get_perfil_logado(request), post=postagem)
 	curtida.descurtir()
 	return redirect('index')
 
+@login_required
 class PostarView(View):
 	def postar(self, request):
 		form = PostForm(request.POST, request.FILES)
