@@ -5,12 +5,10 @@ from django.contrib.auth.models import User
 
 class Perfil(models.Model):
 	telefone = models.CharField(max_length=11, null=False)
-	contatos = models.ManyToManyField('self')
+	contatos = models.ManyToManyField('self', related_name='contatos')
 	usuario = models.OneToOneField(User,related_name="perfil",on_delete=models.CASCADE)
-	ativa = models.BooleanField(default=True)
-	justificativa = models.TextField(null=True)
-	contatos_bloqueados = models.BooleanField(default=False)
-
+	ativo = models.BooleanField(default=True)
+	contatos_bloqueados = models.ManyToManyField('self', related_name='contatos_bloqueados')
 
 	@property
 	def nome(self):
@@ -19,14 +17,6 @@ class Perfil(models.Model):
 	@property
 	def email(self):
 		return self.usuario.email
-
-	@property
-	def superuser(self):
-		return self.usuario.is_superuser
-
-	@property
-	def get_postagens(self):
-		return Postagem.objects.filter(id=self.id)
 
 	def desfazer(self, perfil_id):
 		self.contatos.remove(perfil_id)
@@ -71,7 +61,10 @@ class Postagem(models.Model):
 	texto_postagem = models.CharField(max_length=300)
 	data_postagem = models.DateTimeField(auto_now_add=True)
 	perfil = models.ForeignKey(Perfil, related_name='usuario_postagem', on_delete=models.CASCADE)
+	foto = models.ImageField(upload_to='images/postagens', max_length=None, null=True)
 
+	class Meta:
+		ordering = ['data_postagem']
 
 	@property
 	def curtidas(self):
@@ -101,3 +94,4 @@ class Curtida(models.Model):
 
 	def descurtir(self):
 		self.delete()
+

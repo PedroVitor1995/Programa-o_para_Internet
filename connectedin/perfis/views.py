@@ -1,5 +1,4 @@
 from django.views import View
-
 from perfis.models import *
 from perfis.forms import *
 from django.shortcuts import render,redirect
@@ -113,11 +112,16 @@ def alterar_senha(request):
 @login_required
 @transaction.atomic
 def bloquear(request, perfil_id):
-	if request.user.is_superuser:
-		perfil = Perfil.objects.get(id=perfil_id)
-		perfil.contato_bloqueado = True
-		perfil.save()
-		return redirect('index')
+	perfil = get_perfil_logado(request)
+	perfil_a_bloquear = Perfil.objects.get(id=perfil_id)
+	if perfil != perfil_a_bloquear :
+		perfil.contatos_bloqueados.add(perfil_a_bloquear)
+		messages.success(request,'Perfil foi bloqueado.')
+	else:
+		messages.error(request, 'O usuário não pode se bloquear.')
+
+	return redirect('bloquear')
+
 
 #Pesquisar usuário
 @login_required
@@ -144,6 +148,7 @@ def pesquisar_usuario(request):
 		}
 	return render(request, 'busca.html', contexto)
 
+
 def tornar_superusuario(request,  perfil_id):
 	perfil = Perfil.objects.get(id=perfil_id)
 	perfil.usuario.is_superuser = True
@@ -167,14 +172,31 @@ def descurtir(request, post_id):
 	curtida.descurtir()
 	return redirect('index')
 
-@login_required
-class PostarView(View):
-	def postar(self, request):
-		form = PostForm(request.POST, request.FILES)
-		if form.is_valid:
-			dados_form = form.cleaned_data
-			postagem = Postagem(texto_postagem=dados_form['texto_postagem'], perfil=get_perfil_logado, imagem=dados_form['imagem'])
-			postagem.save()
-			return redirect('index')
 
-		return redirect('index')
+@login_required
+def postar(request):
+	if request.POST:
+		postagem = Postagem()
+		postagem.perfil = get_perfil_logado(request)
+		form = PostagemForm(request.POST, request.FILES)
+		if form.is_valid():
+			model_instance = form.save(commit=False)
+			model_instance.save()       
+			messages.success(request, 'Postagem feita com sucesso.')
+		else:
+			messages.error(request, 'Não foi possivel fazer a postagem')
+
+	return redirect('timeline')
+
+@login_required
+def excluir_postagem(request, postagem_id):
+	post = Postagem.objects.get(id=postagem_id)
+	if post.perfil == get_perfil_logado(request) or get_perfil_logado(request).usuario.is_superuser:
+		post.delete()
+		messages.success(request, 'A postagem foi excluida.')
+	else:
+		messages.error(request, 'Você não pode excluir a postagem')
+
+	return redirect('timeline')
+
+

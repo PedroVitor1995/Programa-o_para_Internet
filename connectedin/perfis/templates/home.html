@@ -4,14 +4,14 @@
     margin-left: 5%;">
       <div class="w3-container w3-padding">
         <h4 class="w3-opacity"><b>Postagem<b></h4>
-        <form method="POST">
+        <form method="POST" action="{% url 'postar' %}">
           {% csrf_token %}
-          <textarea name="texto" required class="form-control input-lg p-text-area" rows="2" placeholder="O que você está pensando hoje, {{ request.user.perfil.nome }}?"></textarea>
+          <textarea name="texto_postagem" required class="form-control input-lg p-text-area" rows="2" placeholder="O que você está pensando hoje, {{ request.user.perfil.nome }}?"></textarea>
           <div class="w3-row" style="width: 100%; margin-top: 5px;">
             <div class="w3-col w3-cell" style="width: 70%;">
               <div class="w3-row" style="width: 100%;">
                 <div class="w3-col w3-cell" style="width: 25%;">
-                  <pm>Adicionar imagem</p>
+                  <p>Adicionar imagem</p>
                 </div>
                 <div class="w3-col w3-cell" style="width: 50%;">
                   <input class="w3-card panel" type="file" name="imagem">
@@ -25,17 +25,28 @@
         </form> 
       </div>
     </div>
-      
-    {% for post in posts %}
-      <div class="w3-card w3-round w3-white" style="margin-right: 5%; margin-top:20px;
-      margin-left: 5%;">
-        <div class="w3-container w3-padding">
-          <img src="static/img/photo.jpg" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
-          <h4><b>{{perfil_logado.nome}}</b></h4><br>
-          <hr class="w3-clear">
-          <div>post.texto_postagem</div>
-          <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Curtir</button> 
+    {% if posts %}  
+      {% for post in posts %}
+        <div class="w3-card w3-round w3-white" style="margin-right: 5%; margin-top:20px;
+        margin-left: 5%;">
+          <div class="w3-container w3-padding">
+            <img src="static/img/photo.jpg" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
+            <span class="w3-right w3-opacity">{{post.data_postagem}}</span>
+            <h4><b>{{post.perfil.nome}}</b></h4><br>
+            <hr class="w3-clear">
+            <div>{{post.texto_postagem}}</div>
+            <div class="w3-row" style="width: 100%">
+              <div class="w3-col w3-cell" style="width: 50%">
+                <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Curtir</button> 
+              </div>
+              <div class="w3-col w3-cell" style="width: 50%">
+                <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom w3-right"><i class="fa fa-trash"></i>  Excluir</button> 
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    {% endfor %}
+      {% endfor %}
+    {% else %}
+      <li class="list-group-item">Nenhuma postagem foi encontrado.</li>
+    {% endif %}
 {% endblock  %}
