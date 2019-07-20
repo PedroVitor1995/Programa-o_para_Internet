@@ -34,15 +34,30 @@
             <span class="w3-right w3-opacity">{{post.data_postagem}}</span>
             <h4><b>{{post.perfil.nome}}</b></h4><br>
             <hr class="w3-clear">
-            <div>{{post.texto_postagem}}</div>
-            <div class="w3-row" style="width: 100%">
+            {% if post.perfil == perfil_logado %}
+              <div>{{post.texto_postagem}}</div>
+              <div class="w3-row" style="width: 100%">
+                <div class="w3-col w3-cell" style="width: 50%">
+                  <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Curtir</button> 
+                </div>
+                <div class="w3-col w3-cell" style="width: 50%">
+                  <a href="{% url 'excluir_postagem' post.id %}" onclick="confirmar_excluir_post({{post.id}})"><button type="button" class="w3-button w3-theme-d1 w3-margin-bottom w3-right"<i class="fa fa-trash"></i>  Excluir</button> 
+                  </a>
+                </div>
+              </div>
+            {% elif perfil_logado.usuario.is_superuser %}
+              <div class="w3-col w3-cell" style="width: 50%">
+                <a href="{% url 'excluir_postagem' post.id %}" onclick="confirmar_excluir_post({{post.id}})"><button type="button" class="w3-button w3-theme-d1 w3-margin-bottom w3-right"><i class="fa fa-trash"></i>  Excluir</button> 
+                </a>
+              </div>
+            {% else %}
               <div class="w3-col w3-cell" style="width: 50%">
                 <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Curtir</button> 
               </div>
               <div class="w3-col w3-cell" style="width: 50%">
-                <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom w3-right"><i class="fa fa-trash"></i>  Excluir</button> 
+                <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom w3-right"><i class="fa fa-refresh"></i>  Compatilhar</button> 
               </div>
-            </div>
+            {% endif %}
           </div>
         </div>
       {% endfor %}

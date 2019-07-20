@@ -149,14 +149,13 @@ def pesquisar_usuario(request):
 	return render(request, 'busca.html', contexto)
 
 
-def tornar_superusuario(request,  perfil_id):
+def tornar_super_usuario(request,  perfil_id):
 	perfil = Perfil.objects.get(id=perfil_id)
 	perfil.usuario.is_superuser = True
 	perfil.usuario.save()
 	perfil.save()
 	messages.success(request, 'Este perfil agora é super usuario')
 	return redirect('index')
-
 
 @login_required
 def curtir(request, post_id):
@@ -180,8 +179,7 @@ def postar(request):
 		postagem.perfil = get_perfil_logado(request)
 		form = PostagemForm(request.POST, request.FILES)
 		if form.is_valid():
-			model_instance = form.save(commit=False)
-			model_instance.save()       
+			postagem.save()
 			messages.success(request, 'Postagem feita com sucesso.')
 		else:
 			messages.error(request, 'Não foi possivel fazer a postagem')

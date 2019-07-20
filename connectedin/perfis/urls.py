@@ -12,6 +12,6 @@ urlpatterns = [
     path('convite/<int:convite_id>/recusar/', views.recusar, name='recusar'),
     path('alterar_senha/',views.alterar_senha,name='alterar_senha'),
     path('pesquisar_usuario/',views.pesquisar_usuario,name='pesquisar_usuario'),
-    path('postagem/excluir/<int:postagem_id>/', views.excluir_postagem, name='excluir_postagem'),
     path('postar/', views.postar, name='postar'),
+    path('postagem/excluir/<int:postagem_id>/', views.excluir_postagem, name='excluir_postagem'),
 ]

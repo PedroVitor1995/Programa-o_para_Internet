@@ -27,3 +27,9 @@ function openNav1() {
     x.className = x.className.replace(" w3-show", "");
   }
 }
+
+function confirmar_excluir_post(id){
+  if (confirm('Tem certeza que deseja excluir esta postagem ?')){
+    document.location.href = '/postagem/excluir/' + id + '/'
+  }
+}
