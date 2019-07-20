@@ -38,16 +38,16 @@
               <div>{{post.texto_postagem}}</div>
               <div class="w3-row" style="width: 100%">
                 <div class="w3-col w3-cell" style="width: 50%">
-                  <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Curtir</button> 
+                  <button href="{% url 'curtir' post.id %}" type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Gostei </button>
                 </div>
                 <div class="w3-col w3-cell" style="width: 50%">
-                  <a href="{% url 'excluir_postagem' post.id %}" onclick="confirmar_excluir_post({{post.id}})"><button type="button" class="w3-button w3-theme-d1 w3-margin-bottom w3-right"<i class="fa fa-trash"></i>  Excluir</button> 
+                  <a onclick="confirmar_excluir({{post.id}})"><button type="button" class="w3-button w3-theme-d1 w3-margin-bottom w3-right"<i class="fa fa-trash"></i>  Excluir</button> 
                   </a>
                 </div>
               </div>
             {% elif perfil_logado.usuario.is_superuser %}
               <div class="w3-col w3-cell" style="width: 50%">
-                <a href="{% url 'excluir_postagem' post.id %}" onclick="confirmar_excluir_post({{post.id}})"><button type="button" class="w3-button w3-theme-d1 w3-margin-bottom w3-right"><i class="fa fa-trash"></i>  Excluir</button> 
+                <a onclick="confirmar_excluir({{post.id}})"><button type="button" class="w3-button w3-theme-d1 w3-margin-bottom w3-right"><i class="fa fa-trash"></i>  Excluir</button> 
                 </a>
               </div>
             {% else %}
@@ -65,3 +65,11 @@
       <li class="list-group-item">Nenhuma postagem foi encontrado.</li>
     {% endif %}
 {% endblock  %}
+{% block script %}
+<script>
+    function confirmar_excluir(id){
+        if(confirm('Deseja realmente excluir sua postagem?'))
+        document.location.href='/postagem/excluir/'+ id + '/'
+    }
+</script>
+{% endblock %}

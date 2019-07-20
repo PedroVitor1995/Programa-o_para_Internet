@@ -14,4 +14,6 @@ urlpatterns = [
     path('pesquisar_usuario/',views.pesquisar_usuario,name='pesquisar_usuario'),
     path('postar/', views.postar, name='postar'),
     path('postagem/excluir/<int:postagem_id>/', views.excluir_postagem, name='excluir_postagem'),
+    path('postagem/<int:post_id>/curtir/', views.curtir, name='curtir'),
+    path('postagem/<int:post_id>/descurtir',  views.descurtir, name='descurtir')
 ]

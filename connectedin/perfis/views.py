@@ -148,13 +148,28 @@ def pesquisar_usuario(request):
 		}
 	return render(request, 'busca.html', contexto)
 
-
+@login_required
 def tornar_super_usuario(request,  perfil_id):
 	perfil = Perfil.objects.get(id=perfil_id)
 	perfil.usuario.is_superuser = True
 	perfil.usuario.save()
 	perfil.save()
 	messages.success(request, 'Este perfil agora é super usuario')
+	return redirect('index')
+
+@login_required
+def tirar_superusuario(request, perfil_id):
+	if not get_perfil_logado(request).usuario.is_superuser:
+		msg = "Acesso negado"
+		messages.error(request, msg)
+		return redirect('index')
+
+	perfil = Perfil.objects.get(id=perfil_id).usuario
+	perfil.is_superuser = False
+	perfil.save()
+
+	msg_sucess = "Super usuário retirado deste perfil"
+	messages.success(request, msg_sucess)
 	return redirect('index')
 
 @login_required
