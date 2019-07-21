@@ -6,7 +6,7 @@
         <h4 class="w3-opacity"><b>Postagem<b></h4>
         <form method="POST" action="{% url 'postar' %}">
           {% csrf_token %}
-          <textarea name="texto_postagem" required class="form-control input-lg p-text-area" rows="2" placeholder="O que você está pensando hoje, {{ request.user.perfil.nome }}?"></textarea>
+          <textarea name="texto" required class="form-control input-lg p-text-area" rows="2" placeholder="O que você está pensando hoje, {{ request.user.perfil.nome }}?"></textarea>
           <div class="w3-row" style="width: 100%; margin-top: 5px;">
             <div class="w3-col w3-cell" style="width: 70%;">
               <div class="w3-row" style="width: 100%;">
@@ -24,6 +24,21 @@
           </div>
         </form> 
       </div>
+      {% if messages %}
+        {% for message in messages %}
+          {% if tags.error %}
+            <div class="alert alert-danger alert-dismissible">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+              {{message}}
+            </div>
+          {% else %}
+            <div class="alert alert-success alert-dismissible">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+              {{message}}
+            </div>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
     </div>
     {% if posts %}  
       {% for post in posts %}
@@ -34,19 +49,27 @@
             <span class="w3-right w3-opacity">{{post.data_postagem}}</span>
             <h4><b>{{post.perfil.nome}}</b></h4><br>
             <hr class="w3-clear">
+            <div>{{post.texto_postagem}}</div>
+            <hr class="w3-clear">
             {% if post.perfil == perfil_logado %}
-              <div>{{post.texto_postagem}}</div>
               <div class="w3-row" style="width: 100%">
                 <div class="w3-col w3-cell" style="width: 50%">
                   <button href="{% url 'curtir' post.id %}" type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Gostei </button>
                 </div>
                 <div class="w3-col w3-cell" style="width: 50%">
-                  <a onclick="confirmar_excluir({{post.id}})"><button type="button" class="w3-button w3-theme-d1 w3-margin-bottom w3-right"<i class="fa fa-trash"></i>  Excluir</button> 
+                  <a href="{% url 'excluir_postagem' post.id %}" onclick="confirmar_excluir_post({{post.id}})"><button type="button" class="w3-button w3-theme-d1 w3-margin-bottom w3-right"<i class="fa fa-trash"></i>  Excluir</button> 
                   </a>
                 </div>
               </div>
             {% elif perfil_logado.usuario.is_superuser %}
               <div class="w3-col w3-cell" style="width: 50%">
+                <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Curtir</button> 
+              </div>
+              <div class="w3-col w3-cell" style="width: 25%">
+                <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom w3-right"><i class="fa fa-refresh"></i>  Compatilhar</button> 
+              </div>
+              <div class="w3-col w3-cell" style="width: 25%">
+                <a href="{% url 'excluir_postagem' post.id %}" onclick="confirmar_excluir_post({{post.id}})"><button type="button" class="w3-button w3-theme-d1 w3-margin-bottom w3-right"><i class="fa fa-trash"></i>  Excluir</button> 
                 <a onclick="confirmar_excluir({{post.id}})"><button type="button" class="w3-button w3-theme-d1 w3-margin-bottom w3-right"><i class="fa fa-trash"></i>  Excluir</button> 
                 </a>
               </div>
@@ -62,7 +85,8 @@
         </div>
       {% endfor %}
     {% else %}
-      <li class="list-group-item">Nenhuma postagem foi encontrado.</li>
+      <div class="w3-card w3-round w3-white" style="margin-right: 5%; margin-top:20px;
+    margin-left: 5%; font-size: 22px;">Nenhuma postagem foi encontrado.</div>
     {% endif %}
 {% endblock  %}
 {% block script %}

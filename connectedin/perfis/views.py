@@ -190,11 +190,11 @@ def descurtir(request, post_id):
 @login_required
 def postar(request):
 	if request.POST:
-		postagem = Postagem()
-		postagem.perfil = get_perfil_logado(request)
+		perfil = get_perfil_logado(request)
 		form = PostagemForm(request.POST, request.FILES)
 		if form.is_valid():
-			postagem.save()
+			texto = request.POST['texto']
+			Postagem.objects.create(texto_postagem = texto, perfil = perfil)
 			messages.success(request, 'Postagem feita com sucesso.')
 		else:
 			messages.error(request, 'Não foi possivel fazer a postagem')
@@ -204,12 +204,14 @@ def postar(request):
 @login_required
 def excluir_postagem(request, postagem_id):
 	post = Postagem.objects.get(id=postagem_id)
+	message = ''
 	if post.perfil == get_perfil_logado(request) or get_perfil_logado(request).usuario.is_superuser:
 		post.delete()
-		messages.success(request, 'A postagem foi excluida.')
+		message = 'A postagem foi excluida com sucesso.'
 	else:
-		messages.error(request, 'Você não pode excluir a postagem')
+		message = 'Não foi possivel excluir postagem.'
 
-	return redirect('timeline')
+	return render(request, 'home.html', {'message':message,'perfil_logado' : get_perfil_logado(request)})
+
 
 
