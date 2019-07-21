@@ -9,6 +9,7 @@ class Perfil(models.Model):
 	usuario = models.OneToOneField(User,related_name="perfil",on_delete=models.CASCADE)
 	ativo = models.BooleanField(default=True)
 	contatos_bloqueados = models.ManyToManyField('self', related_name='contatos_bloqueados')
+	melhores_amigos = models.ManyToManyField('self', related_name='melhores_amigos')
 
 	@property
 	def nome(self):

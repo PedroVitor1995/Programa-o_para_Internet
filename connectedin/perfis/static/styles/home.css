@@ -1,7 +1,5 @@
 body {
     padding-top: 5px !important;
-    width: 100% !important;
-    height: 100% !important;
 }
 .w3-badge, .w3-tag {
     background-color: #009688 !important;
@@ -11,3 +9,4 @@ body {
     padding-right: 8px;
     text-align: center;
 }
+

@@ -39,7 +39,8 @@
         <div class="w3-dropdown-hover w3-hide-small w3-right">
           <button class="w3-button w3-padding-large" title="Options"><b class="item-menu">Opções</b></button>     
           <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">
-            <a href="{% url 'index'%}" class="w3-bar-item w3-button">Todos os perfis</a>
+            <a href="{% url 'index'%}" class="w3-bar-item w3-button">Todos os Perfis</a>
+            <a href="{% url 'exibir_melhores_amigos'%}" class="w3-bar-item w3-button">Melhores Amigos</a>
             <a href="#" class="w3-bar-item w3-button">Alterar Foto</a>
             <a href="{% url 'alterar_senha'%}" class="w3-bar-item w3-button">Alterar Senha</a>
             <a href="{% url 'desativar_perfil'%}" class="w3-bar-item w3-button">Desativar Perfil</a>
@@ -66,9 +67,11 @@
         <img src="{% static 'img/photo.jpg' %}" class="image-perfil-cell" alt="Avatar">
         <b>{{perfil_logado.nome}}</b>
       </div>
+      <a href="{% url 'index'%}" class="w3-bar-item w3-button">Todos os Perfis</a>
+      <a href="{% url 'exibir_melhores_amigos'%}" class="w3-bar-item w3-button">Melhores Amigos</a>
       <a href="#" class="w3-bar-item w3-button w3-padding-large link-opcoes">Alterar Foto</a>
       <a href="{% url 'alterar_senha'%}" class="w3-bar-item w3-button w3-padding-large link-opcoes">Alterar Senha</a>
-      <a href="#" class="w3-bar-item w3-button w3-padding-large link-opcoes">Ativar/Desativar Conta</a>
+      <a href="#" class="w3-bar-item w3-button w3-padding-large link-opcoes">Ativar/Desativar Perfil</a>
       <a href="/logout/" class="w3-bar-item w3-button w3-padding-large link-opcoes">Sair</a>
     </div>
     <div id="navDemo1" class="w3-bar-block w3-theme-d4 w3-hide w3-hide-large w3-hide-medium w3-large menu-cell" style="float: left;">
@@ -101,7 +104,7 @@
                 {% endfor %}
               </div>
             {% else %}
-              <div class="w3-card w3-white w3-round w3-center">
+              <div class="w3-card w3-white w3-round w3-center" style="font-size: 15px;">
                 <p>Você não possui contatos no momento.</p>
               </div>
             {% endif %}
@@ -140,7 +143,7 @@
                 {% endfor %} 
               </div> 
             {% else %}
-              <div class="w3-card w3-white w3-round w3-center">
+              <div class="w3-card w3-white w3-round w3-center" style="font-size: 15px;">
                 <p>Não há convites recebidos no momento.</p>
               </div>
             {% endif %}
@@ -166,7 +169,7 @@
                 {% endfor %}
               </div>
             {% else %}
-                <div class="w3-card w3-white w3-round w3-center">
+              <div class="w3-card w3-white w3-round w3-center" style="font-size: 15px;">
                 <p>Não há convites enviados no momento.</p>
               </div>
             {% endif %}

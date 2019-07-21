@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block body %}
+    <div class="w3-row" style="margin-top: 1px;margin-left: 5%; margin-right: 5%;">
+        <div class="w3-row">
+            <h3 class="w3-round w3-center w3-panel w3-padding-16 w3-gray">
+                <b>Melhores Amigos</b>
+            </h3>
+        </div>
+        {% if messages %}
+            {% for message in messages %}
+                {% if tags.error %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        {{message}}
+                    </div>
+                {% else %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        {{message}}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        <div class="w3-row" style="width: 100%">
+            {% if melhores_amigos %}
+                {% for contato in melhores_amigos %}
+                    <div class="w3-col w3-center" style="width: 50%; margin-left: 5%;">
+                        <h3><a href="{% url 'exibir' contato.id %}"><b>{{contato.nome}}</b></a></h3>
+                    </div>
+                    <div class="w3-col w3-center" style="width: 20%; margin-top:17px;">
+                        <a href="{% url 'remover_melhor_amigo' contato.id %}" class="btn-danger w3-round w3-button">Remover da lista</a>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="w3-card w3-white w3-round w3-center" style="font-size: 15px;">
+                    <p>Não há contatos na lista de melhores amigos</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -46,6 +46,8 @@ def convidar(request, perfil_id):
 	perfil_logado = get_perfil_logado(request)
 	if perfil_logado.pode_convidar(perfil_a_convidar):
 		perfil_logado.convidar(perfil_a_convidar)
+		mensagem = 'Você enviou um convite para {} .'.format(perfil_a_convidar.nome)
+		messages.success(request,mensagem)
 
 	return redirect('index')
 
@@ -77,6 +79,11 @@ def desfazer(request,perfil_id):
 	perfil_logado = get_perfil_logado(request)
 	perfil_logado.desfazer(perfil_a_desfazer)
 	return redirect('timeline')
+
+	mensagem = 'O contato com o perfil {} foi desfeito.'.format(perfil_a_desfazer.nome)
+	messages.success(request,mensagem)
+
+	return redirect('index')
 	 	
 #Alterar senha
 @login_required
@@ -139,25 +146,19 @@ def desbloquear(request, perfil_id):
 @login_required
 @transaction.atomic
 def pesquisar_usuario(request):
-	perfil_logado = get_perfil_logado(request)
-	nome_buscado = request.GET['nome']
-	if nome_buscado:
-		resultado = Perfil.objects.filter(nome__contains=nome_buscado) \
-							.exclude(nome=perfil_logado.nome) \
-							.exclude(bloqueado=True) \
-							.exclude(ativo=False)
-		contexto = {
-			"perfil": perfil_logado,
-			"resultado": resultado,
-			"nome_buscado": nome_buscado
-			}
-		return render(request, 'busca.html', contexto)
+	nome = request.GET['nome']
+	perfis_econtrados = Perfil.objects.filter(nome__startswith=nome)
+
+	paginator = Paginator(perfis_econtrados, 10)
+	page = request.GET.get('page')
+	task = paginator.get_page(page)
 
 	contexto = {
-		"perfil": perfil_logado,
-		"resultado": resultado,
-		"nome_buscado": nome_buscado
-		}
+		'perfis_econtrados': task,
+		'perfil_logado': get_perfil_logado(request),
+		'range_paginator': range(1, task.paginator.num_pages + 1),
+		'current_page': int(page) if page else 1
+	}
 	return render(request, 'busca.html', contexto)
 
 @login_required
@@ -189,14 +190,14 @@ def curtir(request, post_id):
 	postagem = Postagem.objects.get(id=post_id)
 	curtida = Curtida(perfil=get_perfil_logado(request), post=postagem)
 	curtida.save()
-	return redirect('index')
+	return redirect('timeline')
 
 @login_required
 def descurtir(request, post_id):
 	postagem = Postagem.objects.get(id=post_id)
 	curtida = Curtida(perfil=get_perfil_logado(request), post=postagem)
 	curtida.descurtir()
-	return redirect('index')
+	return redirect('timeline')
 
 
 @login_required
@@ -255,5 +256,42 @@ def ativar_perfil(request):
     return render(request, 'reativar_perfil.html', {'perfil_logado': get_perfil_logado(request)})
 
 
+# Adicionar aos melhores amigos
+@login_required
+def adicionar_melhor_amigo(request,perfil_id):
+	perfil = get_perfil_logado(request)
+	perfil_a_melhor_amigo = Perfil.objects.get(id=perfil_id)
+	if perfil != perfil_a_melhor_amigo :
+		perfil.melhores_amigos.add(perfil_a_melhor_amigo)
+		mensagem = 'O perfil {} foi adicionado a lista de melhores amigos.'.format(perfil_a_melhor_amigo.nome)
+		messages.success(request,mensagem)
 
+	return render(request, 'index.html',{'perfis': Perfil.objects.all(),\
+										'perfil' : perfil,\
+                   						'perfil_logado' : get_perfil_logado(request)})
+
+
+# Listar de melhores amigos
+@login_required
+def listar_melhores_amigos(request):
+	perfil_logado = get_perfil_logado(request)
+	melhores_amigos = perfil_logado.melhores_amigos.all()
+
+	return render(request, 'melhores_amigos.html',{'perfil_logado' : get_perfil_logado(request),
+                   'melhores_amigos':melhores_amigos})
+
+
+# Remover da listar de melhores amigos
+@login_required
+def remover_melhor_amigo(request,perfil_id):
+	perfil_logado = get_perfil_logado(request)
+	perfil_a_remover = Perfil.objects.get(id=perfil_id) 
+
+	if perfil_logado != perfil_a_remover:
+		perfil_logado.melhores_amigos.remove(perfil_a_remover)
+		mensagem = 'O perfil {} foi removido a lista de melhores amigos.'.format(perfil_a_remover.nome)
+		messages.success(request,mensagem)
+
+	return render(request, 'melhores_amigos.html',{'perfis': Perfil.objects.all(),\
+                   						'perfil_logado' : get_perfil_logado(request)})
 
