@@ -64,7 +64,7 @@ class Postagem(models.Model):
 	foto = models.ImageField(upload_to='images/postagens', max_length=None, null=True)
 
 	class Meta:
-		ordering = ['data_postagem']
+		ordering = ['-data_postagem']
 
 	@property
 	def curtidas(self):

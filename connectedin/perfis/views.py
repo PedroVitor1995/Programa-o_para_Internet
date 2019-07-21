@@ -34,8 +34,6 @@ def exibir_perfil(request, perfil_id):
 	perfil_logado = get_perfil_logado(request)
 	ja_eh_contato = perfil in perfil_logado.contatos.all()
 
-	if perfil_logado.ativa == False:
-		return render(request,'status.html', {'perfil_logado': perfil_logado})
 
 	return render(request, 'perfil.html',{'perfil' : perfil,
                    'perfil_logado' : get_perfil_logado(request),
@@ -61,7 +59,7 @@ def get_perfil_logado(request):
 def aceitar(request, convite_id):
 	convite = Convite.objects.get(id=convite_id)
 	convite.aceitar()
-	return redirect('index')
+	return redirect('timeline')
 
 #Rejeitar solicitação
 @login_required
@@ -69,7 +67,7 @@ def aceitar(request, convite_id):
 def recusar(request, convite_id):
 	convite = Convite.objects.get(id=convite_id)
 	convite.recusar()
-	return redirect('index')
+	return redirect('timeline')
 
 #Desfazer amizade
 @login_required
@@ -78,7 +76,7 @@ def desfazer(request,perfil_id):
 	perfil_a_desfazer = Perfil.objects.get(id=perfil_id)
 	perfil_logado = get_perfil_logado(request)
 	perfil_logado.desfazer(perfil_a_desfazer)
-	return redirect('index')
+	return redirect('timeline')
 	 	
 #Alterar senha
 @login_required
@@ -116,12 +114,26 @@ def bloquear(request, perfil_id):
 	perfil_a_bloquear = Perfil.objects.get(id=perfil_id)
 	if perfil != perfil_a_bloquear :
 		perfil.contatos_bloqueados.add(perfil_a_bloquear)
-		messages.success(request,'Perfil foi bloqueado.')
+		mensagem = 'O perfil {} foi bloqueado.'.format(perfil_a_bloquear.nome)
+		messages.success(request,mensagem)
 	else:
 		messages.error(request, 'O usuário não pode se bloquear.')
 
-	return redirect('bloquear')
+	return render(request, 'index.html',{'perfis': Perfil.objects.all(),\
+										'perfil' : perfil,\
+                   						'perfil_logado' : get_perfil_logado(request)})
 
+# Desbloquear usuário
+@login_required
+def desbloquear(request, perfil_id):
+    perfil_desbloquear = Perfil.objects.get(id=perfil_id)
+    get_perfil_logado(request).contatos_bloqueados.remove(perfil_desbloquear)
+
+    mensagem = 'O perfil {}  foi desbloqueado.'.format(perfil_desbloquear.nome)
+    messages.success(request, mensagem)
+
+    return render(request, 'index.html',{'perfis': Perfil.objects.all(),\
+    									'perfil_logado' : get_perfil_logado(request)})
 
 #Pesquisar usuário
 @login_required
@@ -212,6 +224,36 @@ def excluir_postagem(request, postagem_id):
 		message = 'Não foi possivel excluir postagem.'
 
 	return render(request, 'home.html', {'message':message,'perfil_logado' : get_perfil_logado(request)})
+
+# Desativar perfil
+@login_required
+def desativar_perfil(request):
+    perfil_logado = get_perfil_logado(request)
+    perfil_logado.ativo = False
+    perfil_logado.save()
+    messages.info(request, 'Perfil desativo. Aguardamos o seu retorno!')
+
+    return redirect('login')
+
+# Ativar perfil
+@login_required
+def ativar_perfil(request):
+    if request.POST:
+        print(request.POST.keys())
+        if not 'reativar' in request.POST.keys():
+            logout(request)
+            return redirect('login')
+
+        perfil_logado = get_perfil_logado(request)
+        perfil_logado.ativo = True
+        perfil_logado.save()
+
+        mensagem = 'Perfil reativado com sucesso. Seja bem-vindo novamente, {}!'.format(perfil_logado)
+        messages.success(request, mensagem)
+        return redirect('index')
+
+    return render(request, 'reativar_perfil.html', {'perfil_logado': get_perfil_logado(request)})
+
 
 
 

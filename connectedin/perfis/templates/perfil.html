@@ -8,23 +8,41 @@
 		</div>
 		<div class="w3-row">
 			{% if ja_eh_contato %}
-				<div class="w3-col w3-center" style="width: 50%; margin-left: 5%;">
-					<h3><b>{{perfil.nome}}</b> / {{perfil.email}} </h3>
-				</div>
-				<div class="w3-col w3-center" style="width: 20%; margin-top:17px;">
-					<a href="{% url 'desfazer' perfil.id%}" class="btn-danger w3-round w3-button">Desfazer</a>
-				</div>
-				<div class="w3-col w3-center" style="width: 20%; margin-top:17px;">
-					<a href="{% url 'bloquear' perfil.id %}" class="btn-warning w3-round w3-button">Bloqueiar</a>
-				</div>
-				<div class="w3-col w3-center well well-sm" style="margin-top:17px;">Vocês estão conectados!</div>
+				{% if perfil_logado.contatos_bloqueados.all %}
+					<div class="w3-col w3-center" style="width: 50%; margin-left: 5%;">
+						<h3><b>{{perfil.nome}}</b> / {{perfil.email}} </h3>
+					</div>
+					<div class="w3-col w3-center" style="width: 20%; margin-top:17px;">
+						<a href="{% url 'desbloquear' perfil.id %}" class="btn-primary w3-round w3-button">Desbloquear</a>
+					</div>
+				{% else %}
+					<div class="w3-col w3-center" style="width: 50%; margin-left: 5%;">
+						<h3><b>{{perfil.nome}}</b> / {{perfil.email}} </h3>
+					</div>
+					<div class="w3-col w3-center" style="width: 20%; margin-top:17px;">
+						<a href="{% url 'desfazer' perfil.id %}" class="btn-danger w3-round w3-button">Desfazer</a>
+					</div>
+					<div class="w3-col w3-center" style="width: 20%; margin-top:17px;">
+						<a href="{% url 'bloquear' perfil.id %}" class="btn-warning w3-round w3-button">Bloqueiar</a>
+					</div>
+					<div class="w3-col w3-center well well-sm" style="margin-top:17px;">Vocês estão conectados!</div>
+				{% endif %}
 			{% else %}
-				<div class="w3-col w3-center" style="width: 50%; margin-left: 5%;">
-					<h3><b>{{perfil.nome}}</b> / {{perfil.email}} </h3>
-				</div>
-				<div class="w3-col w3-center" style="width: 20%; margin-top:17px;">
-					<a href="{% url 'convidar' perfil.id %}" class="btn-primary w3-round w3-button">Convidar</a>
-				</div>
+				{% if perfil == perfil_logado %}
+					<div class="w3-col w3-center" style="width: 50%; margin-left: 5%;">
+						<h3><b>{{perfil.nome}}</b> / {{perfil.email}} </h3>
+					</div>
+					<div class="w3-col w3-center" style="width: 20%; margin-top:17px;">
+						<a href="{% url 'desativar_perfil' %}" class="btn-danger w3-round w3-button">Desativar Perfil</a>
+					</div>
+				{% else %}
+					<div class="w3-col w3-center" style="width: 50%; margin-left: 5%;">
+						<h3><b>{{perfil.nome}}</b> / {{perfil.email}} </h3>
+					</div>
+					<div class="w3-col w3-center" style="width: 20%; margin-top:17px;">
+						<a href="{% url 'convidar' perfil.id %}" class="btn-primary w3-round w3-button">Convidar</a>
+					</div>
+				{% endif %}
 			{% endif %}
 		</div>
 	</div>

@@ -33,3 +33,9 @@ function confirmar_excluir_post(id){
     document.location.href = '/postagem/excluir/' + id + '/'
   }
 }
+
+function confirmBloquear(perfil){
+    if (confirm('Deseja realmente bloquear este perfil?')){
+      document.location.href = '/perfil/bloquear/' + perfil + '/'
+    }
+}

@@ -11,8 +11,9 @@
     <link href="{% static 'styles/signin.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="{% static 'scripts/vendor/site.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <title>ConnectedIn</title>
   </head>
   <body class="w3-theme-l5">
@@ -38,9 +39,10 @@
         <div class="w3-dropdown-hover w3-hide-small w3-right">
           <button class="w3-button w3-padding-large" title="Options"><b class="item-menu">Opções</b></button>     
           <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">
+            <a href="{% url 'index'%}" class="w3-bar-item w3-button">Todos os perfis</a>
             <a href="#" class="w3-bar-item w3-button">Alterar Foto</a>
             <a href="{% url 'alterar_senha'%}" class="w3-bar-item w3-button">Alterar Senha</a>
-            <a href="#" class="w3-bar-item w3-button">Desativar Conta</a>
+            <a href="{% url 'desativar_perfil'%}" class="w3-bar-item w3-button">Desativar Perfil</a>
           </div>
         </div>
         <div class="w3-dropdown-hover w3-hide-small w3-right">
