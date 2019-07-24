@@ -1,0 +1,22 @@
+
+<div>
+	{% for tarefa in tarefas %}
+		{% if tarefa.concluida%}
+			<h1 style="color: blue">{{tarefa.descricao}}</h1>
+
+			<h3>{{tarefa.pessoa.nome}}</h3>
+			<h4 style="color: green">Concluida</h4>
+		{% else %}
+			<h1 style="color: blue">{{tarefa.descricao}}</h1>
+
+			<h3>{{tarefa.pessoa.nome}}</h3>
+			<a href="{% url 'finalizar_tarefa' tarefa.id %}"><button>Finalizar tarefa</button></a>
+		{% endif %}
+	{% endfor %}
+</div>
+
+<br>
+<br>
+<div>
+	<a href="{% url 'adicionar_tarefa' %}">Adiconar tarefa</a>
+</div>
